@@ -33,13 +33,13 @@ int main(){
     if(start_d=='W')d=3;
     bfs();
     if(!arrive)
-    printf("-1");
+        printf("-1");
     return 0;
 }
 void bfs(){
     h=t=0;
     push(x1,y1,d,0);
-    do{
+    while(!arrive&&h<=t){
         h++;
         xr=robots[h].x;yr=robots[h].y;d=robots[h].di;
         if(xr+dx[d]<=n&&xr+dx[d]>=1&&yr+dy[d]<=m&&yr+dy[d]>=1)        push(xr+dx[d],  yr+dy[d],  d,1);
@@ -47,7 +47,7 @@ void bfs(){
         if(xr+3*dx[d]<=n&&xr+3*dx[d]>=1&&yr+3*dy[d]<=m&&yr+3*dy[d]>=1)push(xr+3*dx[d],yr+3*dy[d],d,3);
         push(xr,yr,left(),0);
         push(xr,yr,right(),0);
-    }while(h<=t);
+    }
 }
 bool able;
 void push(int xs,int ys,int ds,int step){
