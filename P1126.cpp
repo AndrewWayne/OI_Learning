@@ -3,7 +3,7 @@
 #include <string.h>
 using namespace std;
 int n,m,h,t,xr,yr,d,ans,x1,y1,x2,y2;
-bool bo[51][51][4],ma[51][51];
+bool bo[51][51][4],ma[51][51],arrive=false;
 int dx[4]={-1,0,1,0};
 int dy[4]={0,1,0,-1};
 struct node{
@@ -25,13 +25,16 @@ int main(){
     for(int i=1;i<=n;i++)
         for(int j=1;j<=m;j++)
             scanf("%d",&temp),ma[i][j]=!temp;
+    arrive=false;
     scanf("%d%d%d%d %c",&x1,&y1,&x2,&y2,&start_d);
     if(start_d=='N')d=0;
     if(start_d=='E')d=1;
     if(start_d=='S')d=2;
     if(start_d=='W')d=3;
     bfs();
+    if(!arrive)
     printf("-1");
+    return 0;
 }
 void bfs(){
     h=t=0;
@@ -59,6 +62,6 @@ void push(int xs,int ys,int ds,int step){
         bo[xs][ys][ds]=true;
         t++;
         robots[t].x=xs;robots[t].y=ys;robots[t].di=ds;robots[t].f=robots[h].f+1;
-        if(xs==x2&&ys==y2)printf("%d", robots[t].f-1),exit(0);
+        if(xs==x2&&ys==y2)printf("%d", robots[t].f-1),arrive=1;
     }
 }
