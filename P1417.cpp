@@ -24,7 +24,7 @@ int main(){
     scanf("%lld",&Foods[i].b);
     rep(1,n)
     scanf("%lld",&Foods[i].c);
-    sort(Foods,Foods+n+1,cmp);
+    sort(Foods+1,Foods+n+1,cmp);
     memset(f,-1,sizeof(f));
 
     f[0]=0;
@@ -33,7 +33,7 @@ int main(){
             if(f[j]!=-1&&j+Foods[i].c<=T)
                 f[j+Foods[i].c]=max(f[j+Foods[i].c],f[j]+Foods[i].a-(j+Foods[i].c)*Foods[i].b);
     }
-    rep(0,T)
+    rep(0,T+1)
     ans=max(ans,f[i]);
     printf("%lld",ans);
 }
