@@ -5,8 +5,10 @@ int main(){
   srand((unsigned)time(NULL));
   freopen("sum.in","w",stdout);
   int n,k;
-  n=rand()%1000+1;
-  k=rand()%1000+1;
+  n=rand()%10+1;
+//n=rand()%1000+1;
+  k=rand()%10+1;
+//k=rand()%1000+1;
   cout<<n<<" "<<k;
   return 0;
 }
