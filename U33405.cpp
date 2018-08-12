@@ -12,13 +12,13 @@ bool check(int w)
         s.insert(a[i]);
     for (int j = 1; j <= R; j++)
     {
-      int rem = w;
-      while (!s.empty()){
-          int* x = s.upper_bound(rem);
-      		if (x == s.begin()) break;
-      		x--; rem -= *x; s.erase(x);
-      }
-      if (s.empty()) return true;
+        int rem = w;
+        while (!s.empty()){
+            multiset<int>::iterator x = s.upper_bound(rem);
+            if (x == s.begin()) break;
+            x--; rem -= *x; s.erase(x);
+        }
+        if (s.empty()) return true;
     }
     return false;
 }
