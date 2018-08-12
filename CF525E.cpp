@@ -1,14 +1,14 @@
 #include <cstdio>
 #include <iostream>
 #include <map>
-#pragma GCC optimize(2)
+#pragma GCC optimize(3)//O3开关
 #define ll long long
 using namespace std;
 map<ll,ll> ma[30];//一个左半边的所有数的和到能出这个和的方案数的映射，供合并
-ll fact[21]={1,1,2,6,24,120,720,5040,40320,362880,3628800,39916800,479001600,6227020800,87178291200,1307674368000,20922789888000,355687428096000,6402373705728000,121645100408832000,2432902008176640000};//只需要预处理出够用的阶乘就够了，由于S<=10^16在long long以内，所以我们可以直接打表写1-20的阶乘，显然够了,(告诉我们一个有效剪枝太大的根本不用判要不要加阶乘)
+ll fact[21]={1,1,2,6,24,120,720,5040,40320,362880,3628800,39916800,479001600,6227020800,87178291200,1307674368000,20922789888000,355687428096000,6402373705728000,121645100408832000,2432902008176640000};//只需要预处理出够用的阶乘就够了，由于S<=10^16在long long以内，所以我们可以直接打表写1-20的阶乘，显然够了,(一个有效剪枝太大的根本不用判要不要加阶乘)
 const int maxn=30;
 int r,k,half,lim;
-ll S,a[maxn],ans;//划重点开long long
+ll S,a[maxn],ans;//划重点开long long,不开一片WA
 inline char nc()
 {
     static char buf[100000],*p1=buf,*p2=buf;
@@ -40,7 +40,7 @@ void dfs2(ll sum,int t,int m){
     if(a[m]<=lim&&sum-fact[a[m]]>=0&&t>=1)
         dfs2(sum-fact[a[m]],t-1,m-1);
     if(a[m]<=sum)
-        dfs2(sum-a[m],t,m-1);
+        dfs2(sum-a[m],t,m-1);//这里我是直接把S，k减掉，这样就不用再合并的时候再求一次左半边需要的长度了。
     dfs2(sum,t,m-1);
 }
 int main(){
@@ -64,7 +64,7 @@ int main(){
     for(int i=0;i<=r;i++)
         ma[i].clear();
     dfs1(0,0,1);
-    dfs2(S,k,r);
+    dfs2(S,k,r);//这真的很Skr
     cout<<ans;
     return 0;
 }
