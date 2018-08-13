@@ -1,53 +1,43 @@
 #include <cstdio>
 #include <iostream>
+#define swap(u,v) u^=v^=u^=v
 using namespace std;
-int heap_size,n;
-int heap[30001];
-void swap(int &a,int &b)
-{
-    int t=a;a=b;b=t;
-}
-void put(int d)
-{
-    int now,next;
-    heap[++heap_size]=d;
-    now=heap_size;
-    while(now>1)
-    {
-        next=now>>1;
-        if(heap[now]>=heap[next]) return;
-        swap(heap[now],heap[next]);
-        now=next;
-    }
-}
-int del()
-{
-    int now,next,res;
-    res=heap[1];
-    heap[1]=heap[heap_size--];
-    now=1;
-    while(now*2<=heap_size)
-    {
-        next=now*2;
-        if(next<heap_size&&heap[next+1]<heap[next]) next++;
-        if(heap[now]<=heap[next]) return res;
-        swap(heap[now],heap[next]);
-        now=next;
-    }
-}
-int get()
-{
-    return heap[1];
-}
-int main()
-{
-  cin>>n;
-  for(int i=1;i<=n;i++)
-  {
-      int x,y;
-      scanf("%d%d",&x,&y);
-      if(x==1) {put(y);}
-      else if(x==2) {printf("%d",get());putchar('\n');}
-      else del();
+const int maxn=1e6+10;
+int heap[maxn],top;
+void put(int x){
+  heap[++top]=x;
+  int k=top;
+  while(heap[k>>1]>heap[k]){
+    swap(heap[k>>1],heap[k]);
+    k>>=1;
   }
+}
+void del(){
+  heap[1]=heap[top--];
+  int k=1;
+  while((k<<1)<=top){
+    int next=k<<1;
+    if(heap[next+1]<heap[next])next++;
+    if(heap[k]<=heap[next])return;
+    swap(heap[k],heap[next]);
+    k=next;
+  }
+}
+int get(){
+  return heap[1];
+}
+int n,p,x;
+int main(){
+  cin>>n;
+  for(int i=1;i<=n;i++){
+    scanf("%d",&p);
+    if(p==1){
+      scanf("%d",&x);
+      put(x);
+    }else if(p==2)
+      printf("%d\n", get());
+    else
+      del();
+  }
+  return 0;
 }
