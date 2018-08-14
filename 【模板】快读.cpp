@@ -7,6 +7,6 @@ inline int read()
 {
     char ch=nc();int sum=0;
     while(!(ch>='0'&&ch<='9'))ch=nc();
-    while(ch>='0'&&ch<='9')sum=sum<<1+sum<<3+ch-48,ch=nc();
+    while(ch>='0'&&ch<='9')sum=(sum<<1)+(sum<<3)+ch-48,ch=nc();
     return sum;
 }
