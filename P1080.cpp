@@ -1,10 +1,73 @@
 #include <cstdio>
 #include <iostream>
+#include <cmath>
 #include <string>
 #include <cstring>
 #include <vector>
 #include <algorithm>
 using namespace std;
+const double PI = acos(-1.0);
+struct Complex{
+    double x,y;
+    Complex(double _x = 0.0,double _y = 0.0){
+        x = _x;
+        y = _y;
+    }
+    Complex operator-(const Complex &b)const{
+        return Complex(x - b.x,y - b.y);
+    }
+    Complex operator+(const Complex &b)const{
+        return Complex(x + b.x,y + b.y);
+    }
+    Complex operator*(const Complex &b)const{
+        return Complex(x*b.x - y*b.y,x*b.y + y*b.x);
+    }
+};
+/*
+ *进行DFT和IDFT前的反置变换
+ *位置i和i的二进制反转后的位置互换
+ *len必须为2的幂
+ */
+void change(Complex y[],int len){
+    int i,j,k;
+    for(int i = 1,j = len/2;i<len-1;i++){
+        if(i < j)    swap(y[i],y[j]);
+        //交换互为小标反转的元素，i<j保证交换一次
+        //i做正常的+1，j做反转类型的+1，始终保持i和j是反转的
+        k = len/2;
+        while(j >= k){
+            j = j - k;
+            k = k/2;
+        }
+        if(j < k)    j+=k;
+    }
+}
+/*
+ *做FFT
+ *len必须是2^k形式
+ *on == 1时是DFT，on == -1时是IDFT
+ */
+void fft(Complex y[],int len,int on){
+    change(y,len);
+    for(int h = 2;h <= len;h<<=1){
+        Complex wn(cos(on*2*PI/h),sin(on*2*PI/h));
+        for(int j = 0;j < len;j += h){
+            Complex w(1,0);
+            for(int k = j;k < j + h/2;k++){
+                Complex u = y[k];
+                Complex t = w*y[k + h/2];
+                y[k] = u + t;
+                y[k + h/2] = u - t;
+                w = w*wn;
+            }
+        }
+    }
+    if(on == -1){
+        for(int i = 0;i < len;i++){
+            y[i].x /= len;
+        }
+    }
+}
 class BigInt
 {
 #define Value(x, nega) ((nega) ? -(x) : (x))
@@ -92,10 +155,12 @@ public:
     }
     BigInt &operator=(const char *s){
         BigInt n(s);
+        *this = n;
         return n;
     }
     BigInt &operator=(const Long x){
         BigInt n(x);
+        *this = n;
         return n;
     }
     friend std::istream &operator>>(std::istream &is, BigInt &n){
@@ -147,19 +212,49 @@ public:
     }
     friend BigInt operator*(const BigInt &lhs, const BigInt &rhs)
     {
-        const int cap = lhs.size() + rhs.size() + 1;
-        BigInt ret(cap, lhs.nega ^ rhs.nega);
-        //j < l.size(),i - j < rhs.size() => i - rhs.size() + 1 <= j
-        for (int i = 0; i < cap - 1; ++i) // assert(0 <= ret[cap-1] < Mod)
-            for (int j = std::max(i - rhs.size() + 1, 0), up = std::min(i + 1, lhs.size()); j < up; ++j)
-            {
-                ret[i] += lhs[j] * rhs[i - j];
-                ret[i + 1] += ret[i] / Mod, ret[i] %= Mod;
-            }
+        int len=1;
+        BigInt ll=lhs,rr=rhs;
+        ll.nega = lhs.nega ^ rhs.nega;
+        while(len<2*lhs.size()||len<2*rhs.size())len<<=1;
+        ll.val.resize(len),rr.val.resize(len);
+        Complex x1[len],x2[len];
+        for(int i=0;i<len;i++){
+            Complex nx(ll[i],0.0),ny(rr[i],0.0);
+            x1[i]=nx;
+            x2[i]=ny;
+        }
+        fft(x1,len,1);
+        fft(x2,len,1);
+        for(int i = 0 ; i < len; i++)
+            x1[i] = x1[i] * x2[i];
+        fft( x1 , len , -1 );
+        for(int i = 0 ; i < len; i++)
+            ll[i] = int( x1[i].x + 0.5 );
+        for(int i = 0 ; i < len; i++){
+            ll[i+1]+=ll[i]/Mod;
+            ll[i]%=Mod;
+        }
+        ll.trim();
+        return ll;
+    }
+    friend BigInt operator*(const BigInt &lhs, const Long &x){
+        BigInt ret=lhs;
+        bool negat = ( x < 0 );
+        Long xx = (negat) ? -x : x;
+        ret.nega ^= negat;
+        ret.val.push_back(0);
+        ret.val.push_back(0);
+        for(int i = 0; i < ret.size(); i++)
+            ret[i]*=xx;
+        for(int i = 0; i < ret.size(); i++){
+            ret[i+1]+=ret[i]/Mod;
+            ret[i] %= Mod;
+        }
         ret.trim();
         return ret;
     }
     BigInt &operator*=(const BigInt &rhs) { return *this = *this * rhs; }
+    BigInt &operator*=(const Long &x) { return *this = *this * x; }
     friend BigInt operator/(const BigInt &lhs, const BigInt &rhs)
     {
         static std::vector<BigInt> powTwo{BigInt(1)};
@@ -183,6 +278,20 @@ public:
             if ((cmp = absComp(cur + estimate[i], lhs)) <= 0)
                 cur += estimate[i], ret += powTwo[i];
         ret.nega = lhs.nega ^ rhs.nega;
+        return ret;
+    }
+    friend BigInt operator/(const BigInt &num,const Long &x){
+        bool negat = ( x < 0 );
+        Long xx = (negat) ? -x : x;
+        BigInt ret;
+        Long k = 0;
+        ret.val.resize( num.size() );
+        ret.nega = (num.nega ^ negat);
+        for(int i = num.size() - 1 ;i >= 0; i--){
+            ret[i] = ( k * Mod + num[i]) / xx;
+            k = ( k * Mod + num[i]) % xx;
+        }
+        ret.trim();
         return ret;
     }
     bool operator==(const BigInt &rhs) const
