@@ -238,11 +238,23 @@ public:
         return ll;
     }
     friend BigInt operator*(const BigInt &lhs, const Long &x){
-      BigInt ret=lhs;
-      ret.val.
-      return ret;
+        BigInt ret=lhs;
+        bool negat = ( x < 0 );
+        Long xx = (negat) ? -x : x;
+        ret.nega ^= negat;
+        ret.val.push_back(0);
+        ret.val.push_back(0);
+        for(int i = 0; i < ret.size(); i++)
+            ret[i]*=xx;
+        for(int i = 0; i < ret.size(); i++){
+            ret[i+1]+=ret[i]/Mod;
+            ret[i] %= Mod;
+        }
+        ret.trim();
+        return ret;
     }
     BigInt &operator*=(const BigInt &rhs) { return *this = *this * rhs; }
+    BigInt &operator*=(const Long &x) { return *this = *this * x; }
     friend BigInt operator/(const BigInt &lhs, const BigInt &rhs)
     {
         static std::vector<BigInt> powTwo{BigInt(1)};
@@ -266,6 +278,20 @@ public:
             if ((cmp = absComp(cur + estimate[i], lhs)) <= 0)
                 cur += estimate[i], ret += powTwo[i];
         ret.nega = lhs.nega ^ rhs.nega;
+        return ret;
+    }
+    friend BigInt operator/(const BigInt &num,const Long &x){
+        bool negat = ( x < 0 );
+        Long xx = (negat) ? -x : x;
+        BigInt ret;
+        Long k = 0;
+        ret.val.resize( num.size() );
+        ret.nega = (num.nega ^ negat);
+        for(int i = num.size() - 1 ;i >= 0; i--){
+            ret[i] = ( k * Mod + num[i]) / xx;
+            k = ( k * Mod + num[i]) % xx;
+        }
+        ret.trim();
         return ret;
     }
     bool operator==(const BigInt &rhs) const
