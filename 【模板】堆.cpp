@@ -7,7 +7,7 @@ int heap[maxn],top;
 void put(int x){
   heap[++top]=x;
   int k=top;
-  while(heap[k>>1]>heap[k]){
+  while(heap[k>>1]<heap[k]){ // <为大根堆
     swap(heap[k>>1],heap[k]);
     k>>=1;
   }
@@ -17,8 +17,8 @@ void del(){
   int k=1;
   while((k<<1)<=top){
     int next=k<<1;
-    if(heap[next+1]<heap[next])next++;
-    if(heap[k]<=heap[next])return;
+    if(heap[next+1]>heap[next])next++;// > 为大根堆
+    if(heap[k]>=heap[next])return;// >= 为大根堆
     swap(heap[k],heap[next]);
     k=next;
   }

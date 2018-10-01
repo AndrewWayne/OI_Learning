@@ -8,8 +8,10 @@ inline char nc()
 }
 inline type read()
 {
+    bool minus=false;
     char ch=nc();type sum=0;
-    while(!(ch>='0'&&ch<='9'))ch=nc();
+    while(!(ch>='0'&&ch<='9')&&ch!='-')ch=nc();
+    if(ch=='-')minus=true,ch=nc();//判负没必要的时候记得删，影响效率
     while(ch>='0'&&ch<='9')sum=(sum<<1)+(sum<<3)+ch-48,ch=nc();
-    return sum;
+    return minus?0-sum:sum;
 }

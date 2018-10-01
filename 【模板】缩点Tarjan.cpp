@@ -4,8 +4,6 @@
 #define maxn 10001
 #define maxm 100001
 using namespace std;
-//洛谷高票记搜题解更顺眼邻接表版OwO
-//记搜TLE点一，WA了点7
 int Index,instack[maxn],DFN[maxn],LOW[maxn];
 int tot,color[maxn],sum[maxn];
 int numedge,head[maxn];
@@ -61,7 +59,7 @@ int main(){
       for(int p=head[i];p;p=edge[p].nxt){
         int u=edge[p].to;
         if(color[i]!=color[u])
-            add(color[i],color[u]);
+            add(color[i],color[u]);//重新建图成DAG
       }
     printf("%d",ans);
     return 0;

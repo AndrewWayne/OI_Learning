@@ -1,43 +1,31 @@
-#include <cstdio>
+//If you succesfully hacked me please contact me with Email
+//AndrewWayne2016@gmail.com
 #include <iostream>
 #include <cmath>
-#include <algorithm>
-#define SWAP(u,v) u^=v^=u^=v
+#include <cstdio>
 using namespace std;
-long long n,a,b,sa,sb,tot;
-bool used[101000];
-int ans[101000],top;
-bool notprime[401000];
-int prime[401000];
-int main(){
-    notprime[0]=true;
-    notprime[1]=true;
-    for(int i=2;i<=300000;i++){
-        if(!notprime[i])prime[++tot]=i;
-        for(int j=1;j<=tot&&i*prime[j]<=300000;j++){
-            notprime[i*prime[j]]=true;
-            if(i%prime[j]==0)break;
+long long n;
+long long s[200005];
+long long x,f,c;
+long long ans=0;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin>> n;
+    for(int i=1;i<=n;i++)
+        cin>> s[i];
+    cin>> x >> f;
+
+    for(int i=1;i <= n;i++)
+    {
+        if(s[i] <= x)
+            continue;
+        else
+        {
+            c = ceil(((double)(s[i]-x))/(x+f));
+            ans += c*f;
         }
     }
-    cin>>n;
-    cin>>a>>b;
-    int sa=sqrt(a);
-    int sb=sqrt(b);
-    for(int i=1;prime[i]<=sa;i++)
-        if(a%prime[i]==0)
-            ans[++top]=prime[i],used[prime[i]]=true;
-    for(int i=1;prime[i]<=sb;i++)
-        if(b%prime[i]==0&&!used[prime[i]])
-            ans[++top]=prime[i],used[prime[i]]=true;
-    for(int i=2;i<=n;i++){
-        cin>>a>>b;
-        for(int i=top;i>=1;i--)
-            if(a%ans[i]!=0&&b%ans[i]!=0)
-                SWAP(ans[i],ans[top]),top--;
-    }
-    if(top==0)
-        printf("-1");
-    else
-        cout<<ans[1];
+    cout<< ans <<endl;
     return 0;
 }

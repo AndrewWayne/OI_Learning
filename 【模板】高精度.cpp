@@ -210,6 +210,7 @@ public:
         rhs.nega ^= 1;
         return *this;
     }
+    /*要速度损失精度
     friend BigInt operator*(const BigInt &lhs, const BigInt &rhs)
     {
         int len=1;
@@ -237,6 +238,23 @@ public:
         ll.trim();
         return ll;
     }
+//*/
+//*要精度拖慢速度
+    friend BigInt operator*(const BigInt &lhs, const BigInt &rhs)
+    {
+        const int cap = lhs.size() + rhs.size() + 1;
+        BigInt ret(cap, lhs.nega ^ rhs.nega);
+        //j < l.size(),i - j < rhs.size() => i - rhs.size() + 1 <= j
+        for (int i = 0; i < cap - 1; ++i) // assert(0 <= ret[cap-1] < Mod)
+            for (int j = std::max(i - rhs.size() + 1, 0), up = std::min(i + 1, lhs.size()); j < up; ++j)
+            {
+                ret[i] += lhs[j] * rhs[i - j];
+                ret[i + 1] += ret[i] / Mod, ret[i] %= Mod;
+            }
+        ret.trim();
+        return ret;
+    }
+//*/
     friend BigInt operator*(const BigInt &lhs, const Long &x){
         BigInt ret=lhs;
         bool negat = ( x < 0 );
@@ -325,8 +343,7 @@ public:
     }
 };
 BigInt ba,bb;
-int main()
-{
+int main(){
     cin>>ba>>bb;
     std::cout << ba + bb << '\n';//和
     std::cout << ba - bb << '\n';//差
