@@ -1,15 +1,10 @@
-int quickPower(int a, int b)//是求a的b次方
+int quickPower(int a, int b, int p)//是求a的b次方
 {
-    int ans = 1, base = a, p = 10007;//ans为答案，base为a^(2^n)
-    while(b > 0)//b是一个变化的二进制数，如果还没有用完
-    {
-        if(b & 1){//&是位运算，b&1表示b在二进制下最后一位是不是1，如果是：
-            ans *= base;//把ans乘上对应的a^(2^n)
-            ans %= p;//取余
-        }
-        base *= base;//base自乘，由a^(2^n)变成a^(2^(n+1))
-        base %= p;//取余
-        b >>= 1;//位运算，b右移一位，如101变成10（把最右边的1移掉了），10010变成1001。现在b在二进制下最后一位是刚刚的倒数第二位。结合上面b & 1食用更佳
+    int ans = 1 % p;//ans为答案，base为a^(2^n)
+    for(; b; b >>= 1){
+        if( b & 1 )
+            ans = (long long)ans * a % p;
+        a = (long long)a * a % p;
     }
-    return ans % p;
+    return ans;
 }
