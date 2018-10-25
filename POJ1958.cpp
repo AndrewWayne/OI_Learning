@@ -57,8 +57,10 @@ int main(){
         f[0][i] = 0;
     for(int i = 1; i <= n; i++)
         d[i] = 2*d[i-1] + 1;
+
     for(int i = 1; i <= n; i++)
         solve(i, m);
+
     for(int i = 1; i <= n; i++)
         printf("%d\n",f[i][m]);
 
