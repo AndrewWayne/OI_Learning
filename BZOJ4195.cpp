@@ -1,3 +1,5 @@
+//本题 map 做法在P1955.cpp
+//NOI2015 最简单的一次NOI的最简单的一题
 #include <cstdio>
 #include <iostream>
 #include <cstring>
