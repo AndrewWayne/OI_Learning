@@ -1,35 +1,38 @@
 #include <cstdio>
 #include <iostream>
-#include <algorithm>
-#define mian main
-#define ture true
+#include <cstring>
 using namespace std;
-int n,l;
-double fields[100001],sum[100001],b[100001];
-bool check(double ans){
-    cout<<ans<<endl;
-    for(int i=1;i<=n;i++){
-        b[i]=fields[i]-ans;
-        sum[i]=sum[i-1]+b[i];
+
+const int maxn = 1e5+10;
+const double eps = 1e-4;
+int n, f;
+double fields[maxn], sum[maxn];
+bool check(double x){
+    for(int i = 1; i <= n; i++)
+        sum[i] = sum[i-1] + (fields[i] - x);
+    double min_val = 1e10, ans = -1e10;
+    for(int i = f; i <= n; i++){
+        min_val = min(sum[i - f], min_val);
+        ans = max(ans, sum[i] - min_val);
     }
-    double minn=sum[1];
-    double val=-1e10;
-    for(int i=l;i<=n;i++){
-        minn=min(minn,sum[i-l]);
-        val=max(val,sum[i]-minn);
-    }
-    return val<0;
+    return ans >= 0;
 }
 int main(){
-    cin>>n>>l;
-    for(int i=1;i<=n;i++)
-        cin>>fields[i];
-    double l=0.0,r=2000.0,ans=0.0;
-    while(fabs(r-l)>0.0001){
-        double mid=(l+r)/2.0;
-        if(check(mid))r=mid;
-        else l=mid,ans=mid;
+    while(~scanf("%d%d", &n, &f)){
+        memset(fields, 0, sizeof(fields)), memset(sum, 0, sizeof(sum));
+        for(int i = 1; i <= n; i++)
+            scanf("%lf", &fields[i]);
+        double l = -1e6, r = 1e6, mid;
+        while( r - l > 5*eps){
+            mid = (l+r) / 2.0;
+            if(check(mid))
+                l = mid;
+            else
+                r = mid;
+        }
+        double average = l;
+        for(average = l; average <= r && check(average); average += eps);
+        printf("%d\n", int(average * 1000));
     }
-    cout<<round(ans*1000);
     return 0;
 }
