@@ -23,11 +23,11 @@ inline type read()
     return sum;
 }
 int main(){
-    for(int iii = 1; iii <= 10; iii++){
-        sprintf(name,"Nine%d.in",iii);
-        freopen(name, "r", stdin);
-        sprintf(name,"Nine%d.out",iii);
-        freopen(name, "w", stdout);
+//    for(int iii = 1; iii <= 10; iii++){
+//        sprintf(name,"Nine%d.in",iii);
+//        freopen(name, "r", stdin);
+//        sprintf(name,"Nine%d.out",iii);
+//        freopen(name, "w", stdout);
     memset(used, 0, sizeof(used));
     stat = stat1 = stat2 = bigger = temp = 0;
     scanf("%d", &n);
@@ -87,6 +87,6 @@ int main(){
             printf("-1\n");
             break;
     }
-    }
+//    }
     return 0;
 }
