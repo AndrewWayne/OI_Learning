@@ -6,7 +6,7 @@
 #define sqr(x) ((x)*(x))
 using namespace std;
 //自豪的采用了SA？？
-const double eps = 1e-4;
+const double eps = 1e-3;
 const double deltaT = 0.99;
 int n, m;
 double a[22], x[22], avg, ans;
@@ -34,10 +34,9 @@ int main(){
     for(int i = 1; i <= n ;i++)
         scanf("%lf", &a[i]), avg += a[i];
     avg /= m;
-    while(Time() < 0.75)
-        SA(10000);
+    while(Time() < 0.9)
+        SA(100000);
     printf("%.2lf", sqrt(ans));
-    scanf("%d", &n);
     return 0;
 }
 void SA(double T){
@@ -45,7 +44,7 @@ void SA(double T){
     while(T > eps){
         random_shuffle(a+1, a+1+n, myrand);
         double temp = calc();
-        if(temp < result || (exp(result - temp)/T)*RAND_MAX < rand())
+        if(temp < result || exp(result - temp)/T*RAND_MAX > rand())
             result = temp;
         T *= deltaT;
     }
