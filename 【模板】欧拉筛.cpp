@@ -16,7 +16,7 @@ int main(){
     for(int j=1;j<=tot&&i*prime[j]<=n;j++){
       notprime[i*prime[j]]=true;
       if(i%prime[j]==0)break;
-    }//在线算法，离线貌似会超时的说
+    }
   }
   for(int i=1;i<=m;i++){
     scanf("%d",&k);
