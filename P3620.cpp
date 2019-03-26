@@ -1,3 +1,5 @@
+//同题BZOJ 1150
+//CTSC2007
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
