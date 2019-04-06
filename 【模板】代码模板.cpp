@@ -1,5 +1,16 @@
+//It's supposed to die.
 #include<cstdio>
+#include<cstring>
+#include<algorithm>
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<utility>
+#include<functional>
+#include<cmath>
+#include<vector>
+#include<assert.h>
+using namespace std;
 #define reg register
 #define endfile fclose(stdin);fclose(stdout);
 namespace IO{
@@ -23,4 +34,13 @@ namespace IO{
         for(x=c^'0';(c=gc())>='0'&&c<='9';x=(x<<3)+(x<<1)+(c^'0'));
         return f?-x:x;
     }
+}
+typedef long long ll;
+typedef unsigned long long ull;
+typedef double db;
+typedef std::pair<int,int> pii;
+typedef std::pair<ll,ll> pll;
+int main(){
+    
+    return 0;
 }
