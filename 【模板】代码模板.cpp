@@ -13,6 +13,11 @@
 using namespace std;
 #define reg register
 #define endfile fclose(stdin);fclose(stdout);
+typedef long long ll;
+typedef unsigned long long ull;
+typedef double db;
+typedef std::pair<int,int> pii;
+typedef std::pair<ll,ll> pll;
 namespace IO{
     char buf[1<<15],*S,*T;
     inline char gc(){
@@ -35,12 +40,8 @@ namespace IO{
         return f?-x:x;
     }
 }
-typedef long long ll;
-typedef unsigned long long ull;
-typedef double db;
-typedef std::pair<int,int> pii;
-typedef std::pair<ll,ll> pll;
+using namespace IO;
 int main(){
-    
+
     return 0;
 }
