@@ -60,9 +60,11 @@ void dfs(int x, int fa){
             val[v] = edge[i].val;
             dfs(v, x);
             xsize[x] += xsize[v] + 1;
-            for(int k = min(xsize[x], q); k; k--)
-                for(int j = min(xsize[v]+1, k); j; j--)
-                    f[x][k] = max(f[x][k], f[x][k - j] + f[v][j-1] + val[v]);
+            for(int j = 1; j <= q; j++) tmp[j] = 0;
+            for(int k = 0; k <= min(xsize[x], q); k++)
+                for(int j = 1; j <= k; j++)
+                    tmp[k] = max(tmp[k], f[x][k - j] + f[v][j-1] + val[v]);
+            for(int j = 1; j <= q; j++) f[x][j] = max(f[x][j], tmp[j]);
         }
         //cerr << "$: " << xsize[x] << " " << f[x][xsize[x]] << endl;
     }

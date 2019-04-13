@@ -41,7 +41,7 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 6060;
+const int maxn = 2e5 + 10;
 int n, r[maxn], l, k, f[maxn][2], root;
 int father[maxn];
 std::vector<int> son[maxn];
@@ -62,7 +62,7 @@ int main(){
     for(int i = 1; i <= n; i++)
         r[i] = read();
     for(int i = 1; i <= n-1; i++){
-        l = read(), k = read(),
+        l = read(), k = read(),//洛谷上是先读入l在读入k,牛客则相反
         son[k].push_back(l);
         father[l]++;
     }
