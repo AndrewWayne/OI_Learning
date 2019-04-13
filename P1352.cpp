@@ -1,4 +1,8 @@
-//It's supposed to die.
+/*
+ *By xiaohei_AWM
+ *2019.4.13
+ *It's supposed to die.
+*/
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
