@@ -1,7 +1,7 @@
 /*
- *Author: xiaohei_AWM
- *Date:
- *Mutto: Face to the weakness, expect for the strength.
+ * Author: xiaohei_AWM
+ * Date:
+ * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
 #include<cstring>

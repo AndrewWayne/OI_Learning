@@ -1,5 +1,6 @@
 #include <cstdio>
-#include <iostream>6
+#include <iostream>
+#include <algorithm>
 using namespace std;
 const int maxn = 1e5 + 10;
 typedef long long ll;
@@ -22,8 +23,8 @@ int main(){
     scanf("%d", &q);
     while(q--){
         scanf("%lld%lld", &l, &r);
-        int len = r - l + 1;
-        int pos = lower_bound(x+1, x+n+1, len) - x - 1;
+        ll len = r - l + 1;
+        ll pos = lower_bound(x+1, x+n+1, len) - x - 1;
         printf("%lld ",s[pos] + (ll)(n - pos) * len);
     }
     return 0;

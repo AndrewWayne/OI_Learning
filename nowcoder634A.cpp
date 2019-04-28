@@ -1,6 +1,6 @@
 /*
  *Author: xiaohei_AWM
- *Date:4.13
+ *Date: 4.19
  *Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -45,37 +45,18 @@ namespace IO{
     }
 }
 using namespace IO;
-std::vector < int > E[300001];
-int N, fa[300001], op[300001], sum[300001], f[300001];
-int main()
-{
-	scanf("%d", &N);
-	for (int i = 1; i <= N; i++)
-		scanf("%d", op + i);
-	for (int i = 2; i <= N; i++)
-	{
-		scanf("%d", fa + i);
-		E[fa[i]].push_back(i);
-	}
-	for (int i = N; i; i--)
-		if (E[i].empty())
-			sum[i] = f[i] = 1;
-		else
-		{
-			for (int e : E[i])
-				sum[i] += sum[e];
-			if (op[i] == 1)
-			{
-				f[i] = 1000000000;
-				for (int e : E[i])
-					f[i] = std::min(f[i], f[e]);
-			}
-			else
-			{
-				for (int e : E[i])
-					f[i] += f[e];
-			}
-		}
-	printf("%d\n", sum[1] - f[1] + 1);
-	return 0;
+const int maxn = 1e5 + 10;
+int n, m, a[maxn], used[maxn], l[maxn], r[maxn];
+int main(){
+    n = read(), m = read();
+    memset(l, 0x7f, sizeof(l));
+    for(int i = 1; i <= n; i++){
+        a[i] = read();
+        l[a[i]] = min(i, l[a[i]]);
+        r[a[i]] = max(i, r[a[i]]);
+    }
+    for(int i = 1; i <= m; i++)
+        cout << l[i] << " " << r[i] << endl;
+
+    return 0;
 }
