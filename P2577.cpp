@@ -45,10 +45,30 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxv = 1e4 + 10;
 const int maxn = 1e3 + 10;
-int n, V, f[maxn][maxv], x[maxn], y[maxn], z[maxn];
+pii a[maxn];
+int n, f[400010], sum, ans, b[maxn];//f[i][j]表示前i-1个人共花费时间j的最优解，i为阶段，使用滚动降维
+bool cmp(pii x, pii y){
+    return x.second > y.second;
+}
 int main(){
-
-    return 0;
+    n = read();
+    for (int i = 1; i <= n; i++)
+        a[i].first = read(), a[i].second = read();
+    sort(a+1, a+1+n, cmp);
+    memset(f, 0x3f, sizeof(f));
+    f[0] = 0;
+    for (int i = 1; i <= n; i++)
+        b[i] = a[i].first + b[i-1];
+    for (int i = 1; i <= n; i++){
+        for (int j = sum; j >= 0; j--){//滚动
+            f[j + a[i].first] = min(f[j + a[i].first], max(f[j], a[i].second + j + a[i].first));//将i加入第一个队列
+            f[j] = max(f[j], a[i].second + b[i] - j);//将i加入第二个队列
+        }
+        sum += a[i].first;
+    }
+    ans = 0x7fffffff;
+    for (int i = 1; i <= sum; i++)
+        ans = min(ans, f[i]);
+    cout << ans << endl;
 }
