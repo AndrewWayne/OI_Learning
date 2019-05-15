@@ -45,15 +45,14 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e5 + 10;
+const int maxn = 5e5 + 10;
 struct Edge{
     int nxt, to, val;
 } edge[2*maxn];
 int n, m, s, u, v, len, fa[maxn][30], dis[maxn], depth[maxn], head[maxn], cnt;//dis[i]表示节点到0的距离
-void add(int u, int v, int w){
+void add(int u, int v){
     edge[++cnt].nxt = head[u];
     edge[cnt].to = v;
-    edge[cnt].val = w;
     head[u] = cnt;
 }
 void dfs(int x){
@@ -64,7 +63,6 @@ void dfs(int x){
         if(v == fa[x][0]) continue;
         fa[v][0] = x;
         depth[v] = depth[x] + 1;
-        dis[v] = dis[x] + edge[i].val;
         dfs(v);
     }
 }
@@ -88,13 +86,13 @@ int LCA(int x, int y){
 int main(){
     n = read(), m = read(), s =read();
     for(int i = 1; i <= n-1; i++)
-        u = read(), v = read(), len = read(),
-        add(u, v, len), add(v, u, len);
+        u = read(), v = read(),
+        add(u, v), add(v, u);
     depth[s] = 1;
     dfs(s);
     for(int i = 1; i <= m; i++){
         u = read(), v = read();
-        cout << dis[u] + dis[v] - 2*dis[LCA(u, v)] << endl;
+        printf("%d\n", LCA(u, v));
     }
     return 0;
 }

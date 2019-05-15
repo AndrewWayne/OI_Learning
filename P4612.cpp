@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date:5.3
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -11,7 +11,6 @@
 #include<ctime>
 #include<utility>
 #include<functional>
-#include<cmath>
 #include<vector>
 #include<assert.h>
 using namespace std;
@@ -45,13 +44,40 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 2e3 + 20, maxm = 2e3 + 20;
-int n, m, mp[maxn][maxm], f[maxn][maxm];// f[i][j]表示以点(i,j)为右下角能找到的最大符合条件的正方形的边长
+struct Rectangle{
+    int x1, x2, y1, y2;
+    Rectangle(){}
+    Rectangle(int x, int y, int p){
+        x1 = x-p;
+        x2 = x+p;
+        y1 = y-p;
+        y2 = y+p;
+    }
+};
+int n, x, y, p;
+ll ans = 0;
 int main(){
-    n = read(), m = read();
-    for(int i = 1; i <= n; i++)
-        for(int j = 1; j <= m; j++)
-            mp[i][j] = read();
-    
+    n = read();
+    x = read(), y = read(), p = read();
+    Rectangle S(x, y, p);
+    for(int i = 1; i < n; i++){
+        x = read(), y = read(), p = read();
+        Rectangle A(x, y, p);
+        int D = max(max(A.x1 - S.x2, S.x1 - A.x2), max(A.y1 - S.y2, S.y1 - A.y2));
+        if(D < 0)
+            D = 0;
+        ans += D;
+        S.x1 -= D;
+        S.x2 += D;
+        S.y1 -= D;
+        S.y2 += D;
+        Rectangle Part;
+        Part.x1 = max(S.x1, A.x1);
+        Part.x2 = min(S.x2, A.x2);
+        Part.y1 = max(S.y1, A.y1);
+        Part.y2 = min(S.y2, A.y2);//慢慢移动
+        S = Part;
+    }
+    cout << ans;
     return 0;
 }

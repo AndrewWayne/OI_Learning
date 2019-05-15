@@ -37,7 +37,7 @@ namespace IO{
         for(x=c^'0';(c=gc())>='0'&&c<='9';x=(x<<3)+(x<<1)+(c^'0'));
         return f?-x:x;
     }
-    inline ll readll(){
+    inline ll readll(){ 
         reg ll x;reg bool f;reg char c;
         for(f=0;(c=gc())<'0'||c>'9';f=c=='-');
         for(x=c^'0';(c=gc())>='0'&&c<='9';x=(x<<3)+(x<<1)+(c^'0'));

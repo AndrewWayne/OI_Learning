@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:5.11
+ * Date:
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -49,7 +49,7 @@ const int maxn = 1e5 + 10;
 struct Edge{
     int nxt, to, val;
 } edge[2*maxn];
-int n, m, s, u, v, len, fa[maxn][30], dis[maxn], depth[maxn], head[maxn], cnt;//dis[i]表示节点到0的距离
+int n, m, u, v, len, fa[maxn][30], dis[maxn], depth[maxn], head[maxn], cnt;//dis[i]表示节点到0的距离
 void add(int u, int v, int w){
     edge[++cnt].nxt = head[u];
     edge[cnt].to = v;
@@ -86,12 +86,12 @@ int LCA(int x, int y){
     return fa[x][0];
 }
 int main(){
-    n = read(), m = read(), s =read();
+    n = read(), m = read();
     for(int i = 1; i <= n-1; i++)
         u = read(), v = read(), len = read(),
         add(u, v, len), add(v, u, len);
-    depth[s] = 1;
-    dfs(s);
+    depth[1] = 1;
+    dfs(1);
     for(int i = 1; i <= m; i++){
         u = read(), v = read();
         cout << dis[u] + dis[v] - 2*dis[LCA(u, v)] << endl;

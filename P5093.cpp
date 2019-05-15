@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 5.3
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -45,13 +45,18 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 2e3 + 20, maxm = 2e3 + 20;
-int n, m, mp[maxn][maxm], f[maxn][maxm];// f[i][j]表示以点(i,j)为右下角能找到的最大符合条件的正方形的边长
+const int maxm = 1e4 + 10;
+int n, k, x, ans, t;
+bool visit[maxm];
 int main(){
-    n = read(), m = read();
-    for(int i = 1; i <= n; i++)
-        for(int j = 1; j <= m; j++)
-            mp[i][j] = read();
-    
+    n = read(), k = read();
+    for(int i = 1; i <= n; i++){
+        x = read();
+        if(!visit[x])
+            t++, visit[x] = 1;
+        if(t == k)
+            ans++, t = 0, memset(visit, 0, sizeof(visit));//由于一个出现过所有数字的组可以在任意排列后构成长度为总组数的所有排列
+    }
+    printf("%d", ans+1);
     return 0;
 }
