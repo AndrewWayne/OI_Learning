@@ -2,6 +2,7 @@
  * Author: xiaohei_AWM
  * Date:5.11
  * Mutto: Face to the weakness, expect for the strength.
+ * Updated: Add Dfs Order
 */
 #include<cstdio>
 #include<cstring>
@@ -49,7 +50,7 @@ const int maxn = 1e5 + 10;
 struct Edge{
     int nxt, to, val;
 } edge[2*maxn];
-int n, m, s, u, v, len, fa[maxn][30], dis[maxn], depth[maxn], head[maxn], cnt;//dis[i]表示节点到0的距离
+int n, m, s, u, v, len, fa[maxn][30], dis[maxn], depth[maxn], head[maxn], cnt, L[maxn], R[maxn], tot;//dis[i]表示节点到0的距离
 void add(int u, int v, int w){
     edge[++cnt].nxt = head[u];
     edge[cnt].to = v;
