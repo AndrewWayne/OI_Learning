@@ -342,14 +342,17 @@ public:
         std::swap(nega, rhs.nega);
     }
 };
-BigInt ba,bb;
+int T;
+BigInt n, ans;
 int main(){
-    cin>>ba>>bb;
-    std::cout << ba + bb << '\n';//和
-    std::cout << ba - bb << '\n';//差
-    std::cout << ba * bb << '\n';//积
-    BigInt d;
-    std::cout << (d = ba / bb) << '\n';//商
-    std::cout << ba - d * bb << '\n';//余
+    cin >> T;
+    while(T--){
+        cin >> n;
+        ans = (n*n*n + 5*n + 6) * 166666668;
+        ans = ans - (ans/MOD)*MOD;
+        cout << ans << endl;
+    }
     return 0;
 }
+
+//1/6 = 166666668

@@ -83,8 +83,8 @@ class BigInt
         return 0;
     }
     using Long = long long;
-    const static int Exp = 7;
-    const static Long Mod = 10000000;
+    const static int Exp = 9;
+    const static Long Mod = 1000000000;
     mutable std::vector<Long> val;
     mutable bool nega = false;
     //规定:0的nega必须是false,0的size必须是0
@@ -275,7 +275,7 @@ public:
     BigInt &operator*=(const Long &x) { return *this = *this * x; }
     friend BigInt operator/(const BigInt &lhs, const BigInt &rhs)
     {
-        static std::vector<BigInt> powTwo{BigInt(1)};
+        static std::vector<BigInt> powTwo{ BigInt(1) };
         static std::vector<BigInt> estimate;
         estimate.clear();
         if (absComp(lhs, rhs) < 0)
@@ -342,14 +342,20 @@ public:
         std::swap(nega, rhs.nega);
     }
 };
-BigInt ba,bb;
+const int maxn = 3e4 + 10;
+int n, at;
+BigInt f[2][2];
 int main(){
-    cin>>ba>>bb;
-    std::cout << ba + bb << '\n';//和
-    std::cout << ba - bb << '\n';//差
-    std::cout << ba * bb << '\n';//积
-    BigInt d;
-    std::cout << (d = ba / bb) << '\n';//商
-    std::cout << ba - d * bb << '\n';//余
+    cin >> n;
+    at = 1;
+    f[1][0] = 1;
+    f[1][1] = 1;
+    for(int i = 2; i <= n; i++){
+        at ^= 1;
+        f[at][0] = f[at^1][0] + f[at^1][1];
+        f[at][1] = f[at^1][0];
+    }
+    BigInt ans = f[at][0] + f[at][1];
+    cout << ans << endl;
     return 0;
 }
