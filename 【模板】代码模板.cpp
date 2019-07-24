@@ -45,6 +45,8 @@ namespace IO{
     }
 }
 using namespace IO;
+const long long llINF = 9223372036854775807;
+const int INF = 2147483647;
 int main(){
 
     return 0;

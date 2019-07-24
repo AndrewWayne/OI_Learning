@@ -1,81 +1,122 @@
-/*
- 原题：nlogn维护可修改区间连续最大和值域[-2e4, 2e4]
- 区间查询，考虑用线段树
- 两个子区间合并时，答案可能是来自三个部分
- （1）左区间
- （2）右区间
- （3）左区间右边的一段 和 右区间左边一段
+```cpp
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+#include<cctype>
+#define ll long long
+#define INF 0x3fffff
+#define clr(x) memset(x,0,sizeof(x))
 
- 需要记录线段树区间左右两个端点向内延伸的最大和，用于合并
- */
-
-#include <cstdio>
-#include <iostream>
-#include <algorithm>
 using namespace std;
-const int M=1e5+5;
-struct node {
-    int mx;//最大连续和
-    int sum;//区间和
-    int Lmx;//左端点向右的最大和
-    int Rmx;//右端点向左的最大和
-} tree[M<<2];
-int A[M],n,m,a,b,f;
-inline void Max(int &a,int b) {
-    if(a<b)a=b;
+
+inline int read()
+{
+	register int ret=0,c=getchar(),b=1;
+	while(!isdigit(c))b=c=='-'?-1:1,c=getchar();
+	while(isdigit(c))ret=ret*10+c-'0',c=getchar();
+	return ret*b;
 }
-inline void up(node &C,node A,node B) { //[A][B]合并成[C]
-    C.sum=A.sum+B.sum;
-    C.mx=max(A.mx,B.mx);
-    Max(C.mx,A.Rmx+B.Lmx);
-    C.Lmx=max(A.Lmx,A.sum+B.Lmx);
-    C.Rmx=max(B.Rmx,B.sum+A.Rmx);
+
+#define M 100005
+
+struct tree2
+{
+	tree2 *lson,*rson;
+	ll x,lazyp,lazym=1;
+}dizhi[M<<1],*root=&dizhi[0];
+
+int n,m,t=1,a[M];
+ll P;
+
+void bulid(tree2 *tree,int l,int r)
+{
+	if(l==r)
+	{
+		tree->x=a[l];
+		return ;
+	}
+	int mid=(l+r)>>1;
+	tree->lson=&dizhi[t++];
+	tree->rson=&dizhi[t++];
+	bulid(tree->lson,l,mid);
+	bulid(tree->rson,mid+1,r);
+	tree->x=(tree->lson->x+tree->rson->x)%P;
 }
-void build(int l,int r,int p) {
-    if(l==r) {
-        tree[p].mx=tree[p].Lmx=tree[p].Rmx=tree[p].sum=A[l];
-        return;
-    }
-    int mid=l+r>>1;
-    build(l,mid,p<<1);
-    build(mid+1,r,p<<1|1);
-    up(tree[p],tree[p<<1],tree[p<<1|1]);
+
+void pushdown(tree2 *tree,int l,int r)
+{
+
+
 }
-void update(int L,int R,int a,int x,int p) {
-    if(L==R) {
-        tree[p].mx=tree[p].Lmx=tree[p].Rmx=tree[p].sum=x;
-        return;
-    }
-    int mid=L+R>>1;
-    if(a<=mid)update(L,mid,a,x,p<<1);
-    else update(mid+1,R,a,x,p<<1|1);
-    up(tree[p],tree[p<<1],tree[p<<1|1]);
+
+void change1(tree2 *tree,int l,int r,int x,int y,int d)
+{
+	if(x<=l&&y>=r)
+	{
+		if(tree->lazyp)pushdown(tree,l,r);
+		tree->x=(tree->x*d)%P;
+		tree->lazym=(tree->lazym*d)%P;
+		return ;
+	}
+	pushdown(tree,l,r);
+	int mid=(l+r)>>1;
+	if(x<=mid)change1(tree->lson,l,mid,x,y,d);
+	if(y>mid) change1(tree->rson,mid+1,r,x,y,d);
+	tree->x=(tree->lson->x+tree->rson->x)%P;
 }
-node query(int L,int R,int l,int r,int p) {
-    if(L==l&&R==r)return tree[p];
-    int mid=L+R>>1;
-    if(r<=mid)return query(L,mid,l,r,p<<1);
-    else if(l>mid)return query(mid+1,R,l,r,p<<1|1);
-    else {
-        node A=query(L,mid,l,mid,p<<1);
-        node B=query(mid+1,R,mid+1,r,p<<1|1);
-        node C;
-        up(C,A,B);
-        return C;
-    }
+
+void change2(tree2 *tree,int l,int r,int x,int y,int d)
+{
+	if(x<=l&&y>=r)
+	{
+		tree->x=(tree->x+d*(r-l+1))%P;
+		tree->lazyp=(tree->lazyp+d)%P;
+		return ;
+	}
+	pushdown(tree,l,r);
+	int mid=(l+r)>>1;
+	if(x<=mid)change2(tree->lson,l,mid,x,y,d);
+	if(y>mid) change2(tree->rson,mid+1,r,x,y,d);
+	tree->x=(tree->lson->x+tree->rson->x)%P;
 }
-int main() {
-    cin>>n;
-    for(int i=1; i<=n; ++i)
-        scanf("%d",&A[i]);
-    build(1,n,1);
-    cin>>m;
-    while(m--) {
-        scanf("%d %d %d",&f,&a,&b);
-        if(f) {
-            node tmp=query(1,n,a,b,1);
-            printf("%d\n",tmp.mx);
-        } else update(1,n,a,b,1);
-    }
-    return 0;
+
+ll query(tree2 *tree,int l,int r,int x,int y)
+{
+	if(x<=l&&y>=r)
+		return tree->x;
+	pushdown(tree,l,r);
+	int mid=(l+r)>>1;
+	ll t1=0,t2=0;
+	if(x<=mid)t1=query(tree->lson,l,mid,x,y);
+	if(y>mid)t2=query(tree->rson,mid+1,r,x,y);
+	return (t1+t2)%P;
 }
+
+int main()
+{
+	n=read(),m=read(),P=read();
+	for(int i=1;i<=n;i++)
+		a[i]=read();
+	bulid(root,1,n);
+	for(int i=1;i<=m;i++)
+	{
+		int mode=read();
+		if(mode==1)
+		{
+			int a=read(),b=read(),c=read();
+			change1(root,1,n,a,b,c);
+		}
+		if(mode==2)
+		{
+			int a=read(),b=read(),c=read();
+			change2(root,1,n,a,b,c);
+		}
+		if(mode==3)
+		{
+			int a=read(),b=read();
+			printf("%lld\n",query(root,1,n,a,b)%P);
+		}
+	}
+	return 0;
+}
+```

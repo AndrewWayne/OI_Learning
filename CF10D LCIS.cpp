@@ -59,16 +59,20 @@ int main(){
     for(int i = 1; i <= m; i++)
         b[i] = read();
     for(int i = 1; i <= n; i++){
+        int val = 0;
+        int turn = 0;
+        if(b[0] < a[i]) val = f[i-1][0], turn = 0;
         for(int j = 1; j <= m; j++){
             if(a[i] != b[j]){
                 f[i][j] = f[i-1][j];
                 sol[i][j] = sol[i-1][j];
             }else{
-                for(int k = 0; k < j; k++)
-                    if(b[k] < a[i] && f[i][j] < f[i-1][k] + 1){
-                        f[i][j] = f[i-1][k] + 1;
-                        sol[i][j] = k;
-                    }
+                f[i][j] = val + 1;
+                sol[i][j] = turn;
+            }
+            if(b[j] < a[i]){
+                if(val < f[i-1][j])
+                    val = f[i-1][j], turn = j;
             }
         }
     }

@@ -4,11 +4,11 @@
 using namespace std;
 struct Edge{
     int u,v,dis;
-    const bool operator<(const Edge &v){
+    bool operator<(const Edge &v)const{
         return dis<v.dis;
     }
 }edge[200020];
-int n,m,k,ans,dad[5050],rank[5050];
+int n,m,k,ans,dad[5050],ranks[5050];
 int find(int x){
     return dad[x]==x?x:dad[x]=find(dad[x]);
 }
@@ -16,12 +16,12 @@ void unionn(int u,int v){//按秩合并
     int fu=find(u);
     int fv=find(v);
     if(fu==fv)return;
-    if(rank[fu]<rank[fv])
+    if(ranks[fu]<ranks[fv])
         dad[fu]=fv;
     else{
         dad[fv]=fu;
         if(fu==fv)
-            rank[fu]++;
+            ranks[fu]++;
     }
 }
 int main(){
