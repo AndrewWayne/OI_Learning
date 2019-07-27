@@ -46,48 +46,59 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e5 + 10;
+const int maxn = 1e6 + 10;
 struct Pair{
     int first, second;
+    int fid, sid;
+    int maxv(){
+        return max(first, second);
+    }
+    int mid(){
+        if(first > second) return sid;
+        else return fid;
+    }
     bool operator<(const Pair &v)const{
-        return first < v.first;
+        return max(first, second) > max(v.first, v.second);
     }
 };
 struct Node{
-    int num, pre, nxt;
+    int num, id, pre, nxt;
 } table[maxn];
-int n, func[maxn], vi[maxn], qu[maxn], top;
+int n, func[maxn], vi[maxn];
+ll ans;
 priority_queue<Pair> Q;
 int main(){
     n = read();
     for(int i = 1; i <= n; i++){
-        table[i].num = read(), func[table[i].num] = i;
+        table[i].num = read(), table[i].id = i;
         table[i].pre = i-1, table[i].nxt = i+1;
     }
     Pair temp, temp1;
     for(int i = 1; i <= n-1; i++){
         temp.first = table[i].num;
+        temp.fid = i;
         temp.second = table[table[i].nxt].num;
+        temp.sid = i+1;
         Q.push(temp);
     }
-    while(n > 0){
+    while(n > 1){
         do{
             temp = Q.top();
             Q.pop();
-        }while(vi[temp.first] || vi[temp.second]);
-        n -= 2;
-        vi[temp.first] = vi[temp.second] = 1;
-        qu[++top] = temp.first;
-        qu[++top] = temp.second;
-        table[table[func[temp.first]].pre].nxt = table[func[temp.second]].nxt;
-        table[table[func[temp.second]].nxt].pre = table[func[temp.first]].pre;
-        temp1.first = table[table[func[temp.first]].pre].num,
-        temp1.second = table[table[func[temp.second]].nxt].num;
+        }while(vi[temp.fid] || vi[temp.sid]);
+        n -= 1;
+        vi[temp.mid()] = 1;
+        ans = ans + temp.maxv();
+        table[table[temp.mid()].pre].nxt = table[temp.mid()].nxt;
+        table[table[temp.mid()].nxt].pre = table[temp.mid()].pre;
+        temp1.first = table[table[temp.mid()].pre].num,
+        temp1.second = table[table[temp.mid()].nxt].num;
+        temp1.fid = table[temp.mid()].pre;
+        temp1.sid = table[temp.mid()].nxt;
         if(temp1.first != 0 && temp1.second != 0)
             Q.push(temp1);
     }
-    for(int i = 1; i <= top; i++)
-        printf("%d ", qu[i]);
+    cout << ans << endl;
     return 0;
 }
 /*
