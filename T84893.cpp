@@ -104,6 +104,8 @@ int main(){
         while(!Q.empty()){
             x = Q.front();
             Q.pop();
+            if(visited[x]) continue;
+            visited[x] = true;
             for(int k = 0; (a[x] >> k); k++){
                 if((a[x] >> k) & 1){
                     int temp = a[x] ^ (1 << k);

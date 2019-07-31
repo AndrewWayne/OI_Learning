@@ -1,60 +1,51 @@
-#include<iostream>
-#include<algorithm>
+#include <cstdio>
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include <bitset>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <unordered_map>
 using namespace std;
-const int N=302,M=100002;
-struct group{
-    int num,id;
-};
-bool operator<(group a,group b){
-    return a.num>b.num;
-}
-group list[N];
-int n;
-char pr[N][M];
-int termid,termcnt;
-int sum;
-int cnt;
-int ans[N];
-int main(){
-    cin>>n;
-    for(int i=1;i<=n;i++){
-        cin>>list[i].num;
-        list[i].id=i;
-        sum+=list[i].num;
-    }
-    sort(list+1,list+n+1);
-    pr[0][0]=1;
-    //初始状态，可以看出不会导致后面跳的时候出问题
-    for(int i=1;i<=n;i++){
-        for(int j=0;j<=sum;j++){
-            if(pr[i-1][j]){
-                pr[i][j]=1;
-            }else{
-                pr[i][j]=0;
-            }
+const int N = 1e6;
+int k, n;
+char s[N];
+int help[N];
+int g[N];
+unordered_map<int, int>f;
+int main() {
+    k=300;
+    scanf("%s",s);
+    n = strlen(s);
+    for (int i = 0; i < n; i ++)
+        s[i] -= '0';
+    int x = k, y = 0, z = 0, xx = 1;
+    while (x % 2 == 0) x /= 2, y ++, xx *= 2;
+    while (x % 5 == 0) x /= 5, z ++, xx *= 5;
+    help[0] = 1;
+    for (int i = 1; i < N; i ++)
+        help[i] = (long long)help[i - 1] * 10 % k;
+    long long ans = 0;
+    int len = max(y, z);
+    int vv = 0;
+    for (int i = n - 1; i >= 0; i --)
+        g[i] = (g[i + 1] + (long long)s[i] * help[n - i - 1]) % k;
+    for (int i = 0; i < n; i ++)
+    {
+        int v = 0;
+        vv = 0;
+        for (int j = 0; j < len && i - j >= 0; j ++) {
+            v = (v + (long long) help[j] * s[i - j]) % k;
+            vv = (vv + (long long) help[j] * s[i - j]) % xx;
+            ans += (v == 0);
         }
-        for(int j=0;j<=sum-list[i].num;j++){
-            if(pr[i-1][j]){
-                pr[i][list[i].num+j]=2;
-                if(j<=sum/2&&list[i].num+j>sum/2){
-                    if(termcnt<list[i].num+j){
-                        termid=i;
-                        termcnt=list[i].num+j;
-                    }
-                }
-            }
-        }
+        if (i - len >= 0)
+            f[g[i - len]]++;
+        if (vv == 0)
+            ans += f[g[i + 1]];
     }
-    for(int i=termid,j=termcnt;i>0;i--){
-        if(pr[i][j]==2){
-            ans[cnt++]=list[i].id;
-            j-=list[i].num;
-        }
-        //否则表示没选
-    }
-    cout<<cnt<<endl;
-    for(int i=0;i<cnt;i++){
-        cout<<ans[i]<<" ";
-    }
-    cout<<endl;
+    printf("%lld\n", ans);
+    return 0;
 }
