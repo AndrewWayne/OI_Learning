@@ -2,7 +2,7 @@
 /*
  * Author: xiaohei_AWM
  * Date: 8.2
- * Mutto: Face to the weakness, expect for the strength.
+ * Mutto:
 */
 #include<cstdio>
 #include<cstring>

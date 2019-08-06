@@ -10,6 +10,7 @@
 #include<cstdlib>
 #include<ctime>
 #include<utility>
+#include<string>
 #include<functional>
 #include<cmath>
 #include<vector>
@@ -47,7 +48,25 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
+int t, cnt, num[3];
+string a, b;
 int main(){
-
+    cin >> t;
+    while(t--){
+        cnt++;
+        cin >> a;
+        int sum = a.size();
+        cin >> b;
+        num[0] = num[1] = num[2] = 0;
+        for(int i = 0; i < sum; i++){
+            if(b[(a[i]-'a')] == 'd') num[0]++;
+            if(b[(a[i]-'a')] == 'w') num[1]++;
+            if(b[(a[i]-'a')] == 'h') num[2]++;
+        }
+        if(4*num[2] >= sum) printf("Case #%d: Harmful\n", cnt);
+        else if(10*num[2] <= sum) printf("Case #%d: Recyclable\n", cnt);
+        else if(num[0] >= 2*num[1]) printf("Case #%d: Dry\n", cnt);
+        else printf("Case #%d: Wet\n", cnt);
+    }
     return 0;
 }

@@ -10,6 +10,7 @@
 #include<cstdlib>
 #include<ctime>
 #include<utility>
+#include<string>
 #include<functional>
 #include<cmath>
 #include<vector>
@@ -47,7 +48,26 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
+int t, b[40];
+char func[16] = "0123456789abcde";
+string a;
+void print(int x[40]){
+    for(int i = 1; i <= 7; i++){
+        printf("%c%c%c%c:", func[x[4*i-3]], func[x[4*i-2]], func[x[4*i-1]], func[x[4*i]]);
+    }
+    printf("%c%c%c%c\n", func[x[32-3]], func[x[32-2]], func[x[32-1]], func[x[32]]);
+}
 int main(){
+    cin >> t;
+    while(t--){
+        cin >> a;
+        int len = a.size();
+        for(int i = 1; i <= 32; i++){
+            for(int j = 4; j >= 1; j--)
+                b[i] += (a[i*4 - j] - '0') << (j-1);
+        }
 
+        print(b);
+    }
     return 0;
 }

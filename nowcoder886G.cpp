@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 8.3
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -47,7 +47,33 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
+int ables[10000][20][32];
+int Caile(int y, int m, int d){
+    int c = y/100;
+    y %= 100;
+    if(m == 1) m = 13;
+    if(m == 2) m = 14;
+    int w = (y + y/4 + c/4 - 2*c + (26 * m+1)/10 + d - 1)%7;
+    return w;
+}
 int main(){
+    for(int year = 1; i <= 1600; i++){
+        for(int mon = 1; mon <= 12; mon++){
+            int lim = 30;
+            if(mon == 1 || mon == 3 || mon == 5 || mon == 7 || mon == 8 || mon == 10 || mon == 12)
+                lim = 31;
+            if(mon == 2){
+                if((year%4==0&&year%100!=0)||year%400==0)
+                    lim = 29;
+                else
+                    lim = 28;
+            }
+            for(int day = 1; day <= lim; day++){
+                if(Caile(year, mon, day) == 5){
 
+                }
+            }
+        }
+    }
     return 0;
 }
