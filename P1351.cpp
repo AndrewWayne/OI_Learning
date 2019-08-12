@@ -47,35 +47,47 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 1e7 + 10;
-int v[maxn], pri[maxn], n, tot, m;
-int sum[maxn], f[maxn];
-void Euler_Sieve(){
-    v[1] = 1;//v[i] 表示 i 的最小质因数
-    f[1] = 1;
-    for(int i = 2; tot <= 100; i++){
-        if (!v[i]) pri[++tot] = i, v[i] = i;
-        for (ll j = 1; j <= tot && i*pri[j] <= maxn; j++)
-            v[i*pri[j]] = pri[j];
+const int maxn = 2e5 + 10;
+const int mod = 1e5 + 7;
+struct Edge{
+    int to, nxt;
+} edge[maxn*2];
+int n;
+int w[maxn], f[maxn], g[maxn], head[maxn], cnt;//f[x]表示x所有儿子中的最大权值，g[x]表示x所有儿子的权值和
+int ans_sum, ans_max;
+int u, v;
+void add(int x, int y){
+    edge[++cnt].to = y;
+    edge[cnt].nxt = head[x];
+    head[x] = cnt;
+}
+void dfs(int x, int fa){
+    int maxd = 0, sumd = 0;
+    for(int i = head[x]; i; i = edge[i].nxt){
+        int j = edge[i].to;
+        if(j == fa) continue;
+        dfs(j, x);
+        ans_max = max(ans_max, maxd * w[j]);
+        maxd = max(maxd, w[j]);
+        ans_sum = (ans_sum + sumd * w[j]) % mod;
+        sumd = (sumd + w[j]) % mod;
+        //八字形
+        ans_max = max(ans_max, f[j] * w[x]);
+        ans_sum = (ans_sum + g[j] * w[x]) % mod;
+        f[x] = max(f[x], w[j]);
+        g[x] = (g[x] + w[j]) % mod;
+        //一字形
     }
 }
 int main(){
-    Euler_Sieve();
-    for(int i = 1; i <= 100; i++)
-        sum[i] = sum[i-1] + pri[i];
-    while(~scanf("%d%d", &n, &m)){
-        int v = sum[n];
-        if((v + m) & 1){
-            printf("No\n");
-            continue;
-        }
-        v = (v + m) >> 1;
-        f[0] = 1;
-        for(int i = 1; i <= n; i++)
-            for(int j = v; j >= pri[i]; j--)
-                f[j] = max(f[j], f[j-pri[i]]);
-        if(f[v]) printf("Yes\n");
-        else printf("No\n");
+    n = read();
+    for(int i = 1; i < n; i++){
+        u = read(), v = read();
+        add(u, v), add(v, u);
     }
+    for(int i = 1; i <= n; i++)
+        w[i] = read();
+    dfs(1, -1);
+    cout << ans_max << " " << (ans_sum*2) % mod << endl;
     return 0;
 }

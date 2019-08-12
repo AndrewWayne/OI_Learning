@@ -23,10 +23,10 @@ long long n, K, a[maxn], choose[maxv], val[maxv];//dp[n][k]表示在n之前分k�
 char name[100];
 int main(){
     //for(int iii = 1; iii <= 10; iii++){
-    //sprintf(name, "dp%d.in", iii);
-    //freopen(name, "r", stdin);
-    //sprintf(name, "dp%d.out", iii);
-    //freopen(name, "w", stdout);
+    sprintf(name, "dp%d.in", iii);
+    freopen(name, "r", stdin);
+    sprintf(name, "dp%d.out", iii);
+    freopen(name, "w", stdout);
     memset(val, 0, sizeof(val));
     memset(a, 0, sizeof(a));
     memset(choose, 0, sizeof(choose));
@@ -62,6 +62,6 @@ int main(){
     for(int i = 0; i < n1; i++)
         delete [] dp[i];
     delete [] dp;
-    //}
+    }
     return 0;
 }

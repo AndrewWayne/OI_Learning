@@ -32,7 +32,7 @@ long long calc(){
 void SA(double);
 double Time(){return (double)clock()/CLOCKS_PER_SEC;}
 int main(){
-    srand(13705834633);
+    srand(time(0));
     //freopen("dp8.in", "r", stdin);
     scanf("%d%d", &n, &k);
     ans = 0;
@@ -49,7 +49,6 @@ int main(){
         for(int j = 1; j + (1<<i) -1 <= n; j++)
             st[j][i] = st[j][i-1] | st[j + (1 << (i-1))][i-1];
     }
-    cerr << st[3][4] << endl;
     while(Time() < 0.9){
         SA(100000);
         //cerr << ans << endl;
@@ -88,7 +87,6 @@ void SA(double T){
         }
         T *= deltaT;
     }
-    cerr << result << endl;
     for(int i = 1; i < k; i++)
         used[slash[i]] = false;
     ans = max(result, ans);

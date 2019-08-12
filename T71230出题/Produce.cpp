@@ -6,20 +6,19 @@
 using namespace std;
 char name[100];
 const int maxn = 5e5 + 10;
-const int MOD = 1e7;
+const int MOD = 1e7 - 10;
 int n, k;
 int main(){
     srand(time(0));
-    for(int iii = 6; iii <= 9; iii++){
+    for(int iii = 4; iii <= 6; iii++){
         sprintf(name, "dp%d.in", iii);
         freopen(name, "w", stdout);
         int t = rand()%4000000 + 1000000;
-        n = rand()%maxn;
-        k = t/n;
+        n = 500;
+        k = 100;
         cout << n << " " << k << endl;
-        for(int i = 1; i <= n; i++){
-            cout << rand()%MOD << " ";
-        }
+        for(int i = 1; i <= n; i++)
+            cout << rand()%MOD + 10 << " ";
         cout << endl;
     }
     return 0;
