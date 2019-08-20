@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 8，20
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -47,10 +47,17 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+const int maxn = 1e6 + 10;
+string s;
+string a = "1";
+bool big;
 int main(){
-
+    cin >> s;
+    ll ans = 0;
+    while(a.size() <= s.size() && a < s){
+        ++ans;
+        a += "00";
+    }
+    cout << ans << endl;
     return 0;
 }

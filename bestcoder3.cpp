@@ -47,9 +47,8 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+const int maxn = 210;
+
 int main(){
 
     return 0;

@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 8，20
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -47,10 +47,18 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+const int maxn = 1e6 + 10;
+int n, l, r;
+ll minsum, maxsum;
+int kidd[30];
 int main(){
-
+    n = read(), l = read(), r = read();
+    for(int i = 0; i <= r; i++)
+        kidd[i] = 1 << i;
+    minsum = n - l;
+    minsum += (1 << l) - 1;
+    maxsum = (ll)(n - r) * (1 << (r-1));
+    maxsum += (1 << r) - 1;
+    cout << minsum << " " << maxsum << endl;
     return 0;
 }

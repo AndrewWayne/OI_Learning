@@ -47,10 +47,19 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+const int maxn = 1e5 + 10;
+char a[maxn], b[maxn];
+ll O, I;
 int main(){
-
+    cin >> a;
+    int len = strlen(a);
+    for(int i = len-1; i >= 0; i--){
+        if(a[i] == '0') O++, b[i] = '0';
+        else{
+            if(I >= O) b[i] = '0';
+            else ++I, b[i] = '1';
+        }
+    }
+    cout << b << endl;
     return 0;
 }

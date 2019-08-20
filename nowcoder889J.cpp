@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 8.15
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -47,10 +47,36 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
-int main(){
-
-    return 0;
+const ll M=1000000000;
+int n,m,i,j,l[300005],r[300005],k;
+ll d,ans,s;
+struct str{
+    int d,x;
+}a[100005];
+bool cmp(str a,str b)
+{
+    return a.x<b.x;
+}
+int main()
+{
+    scanf("%d",&n);
+    for(i=1;i<=n;i++)
+    {
+        scanf("%d %d",&l[i],&r[i]);
+        l[i]*=2;
+        r[i]*=2;
+        a[++k]=(str){1,l[i]+1};
+        a[++k]=(str){-2,(1ll*l[i]+r[i])/2+1};
+        a[++k]=(str){1,r[i]+1};
+    }
+    sort(a+1,a+1+k,cmp);
+    for(i=1;i<=k;i++)
+    {
+        for(j=i;a[j].x==a[i].x;j++)
+            d+=a[j].d;
+        s+=(a[j+1].x-a[j].x)*d;
+        ans=max(ans,s);
+        i=j;
+    }
+    cout<<ans;
 }

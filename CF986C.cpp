@@ -47,10 +47,41 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+const int maxn = 5e6 + 10;
+int n, m;
+int a[maxn], b[maxn], dad[maxn], ans, inv[maxn], inv1[maxn];
+bool visited[maxn];
+int find(unsigned int x){ return x == dad[x]? x: dad[x] = find(dad[x]); }
+bool unionn(int u,int v){int fu = find(u), fv = find(v); if(fu == fv) return false; dad[fv] = fu; return true;}
 int main(){
 
+    n = read(), m = read();
+    for(int i = 0; i < (1 << n); i++)
+        dad[i] = i;
+    for(int i = 1; i <= m; i++){
+        a[i] = read();
+        inv1[a[i]] = b[i];
+        for(int j = 0; j < n; j++)
+            b[i] += (1 << j) * (!((a[i] >> j) & 1));
+        inv[b[i]] = a[i];
+        cerr << "  " << b[i] << endl;
+        visited[b[i]] = 1;
+    }
+
+    for(int i = (1 << n) - 1; i >= 0; i--){
+        if(inv[i]){if(inv[i] > i) ans += (!visited[inv[i]]);}
+        if(inv1[i]){if(inv1[i] > i) }
+        if(!visited[i]) continue;
+        cerr << i << endl;
+        for(int j = n-1; j >= 0; j--){
+            if((i >> j) & 1){
+                int k = i ^ (1 << j);
+                unionn(i, i ^ (1 << j));
+                visited[i ^ (1 << j)] = 1;
+            }
+        }
+    }
+
+    cout << ans << endl;
     return 0;
 }

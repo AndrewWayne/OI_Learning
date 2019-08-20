@@ -47,10 +47,16 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 55;
-ll n, m, dis[maxn][maxn];
-vector<int> to[]
+int a[10];
 int main(){
-
+    srand(time(0));
+    cout << 7 << endl;
+    for(int i = 1; i <= 6; i++){
+        int l = 1 + rand()%29;
+        int r = rand()%(30-l) + l;
+        cout << l << " " << r << endl;
+    }
+    int l = 1 + rand()%29;
+    cout << l << " " << l << endl;
     return 0;
 }
