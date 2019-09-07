@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 9.7
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -47,21 +47,24 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int MOD = 1e9 + 7;
-const int maxn = 3e3 + 10;
-ll c[maxn], f[maxn][2], l[maxn], r[maxn];
-int t, n;
+const int MOD = 1e8;
+/*
+ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+int n1, n2, k1, k2, f[2][220][110][11];//f[p][i][s1][k] 表示摆到第 i 个，已经放了 s1 个骑兵，当前前面连续摆了k个（骑兵-1/步兵-0）
+//f[1][i][s1][k] = f[1][i-1][s1-1][k-1] , 对于k = 1，特判：f[1][i][s1][1] = sum(f[0][i-1][s1-1][0~k1]) 其中枚举s1的范围是max(0, i-n1)~min(i, n1), k的枚举范围可以从max(0, i-n1) ~ k1或k2
 int main(){
-    t = read();
-    while(t--){
-        n = read();
-        for(int i = 1; i < n; i++) c[i] = read();
-        for(int i = 1; i <= n; i++){
-            l[i] = max(0, c[i] )
-        }
-        for(int i = n; i >= 1; i--){
-            f[i][0] =
-        }
+    n1 = read(), n2 = read(), k1 = read(), k2 = read();
+    for(int i = 1; i <= n1+n2; i++){
+        for(int j = 1; j <= )
     }
     return 0;
 }

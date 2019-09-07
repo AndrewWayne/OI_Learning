@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date: 8，20
+ * Date: 8.31
  * Mutto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -10,6 +10,7 @@
 #include<cstdlib>
 #include<ctime>
 #include<utility>
+#include<map>
 #include<functional>
 #include<cmath>
 #include<vector>
@@ -47,18 +48,53 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 1e6 + 10;
-int n, l, r;
-ll minsum, maxsum;
-int kidd[30];
-int main(){
-    n = read(), l = read(), r = read();
-    for(int i = 0; i <= r; i++)
-        kidd[i] = 1 << i;
-    minsum = n - l;
-    minsum += (1 << l) - 1;
-    maxsum = (ll)(n - r) * (1 << (r-1));
-    maxsum += (1 << r) - 1;
-    cout << minsum << " " << maxsum << endl;
+const ll MOD = 1e9 + 7;
+const int maxn = 1e5 + 10;
+ll a, b, c, d;
+vector<int> V;
+bool find(ll l, ll r, ll pl, ll pr) {
+    if(!(l <= pl && pr <= r) || pl > pr) return false;
+    if(l == pl && r == pr) return true;
+    ll mid = (l + r) >> 1;
+    if((l+r) & 1) return 0;
+    if(!((pl <= mid && pr <= mid) || (pl >= mid && pr >= mid)))
+        return 0;
+    if(pl >= mid) V.push_back(1);
+    else V.push_back(0);
+    bool found = false;
+    if(pl >= mid && pr >= mid) found = find(mid, r, pl, pr);
+    else found = find(l, mid, pl, pr);
+    return found;
+}
+int main() {
+    int t;
+    t = read();
+    while(t--){
+        a = readll(), b = readll(), c = readll(), d = readll();
+        int Op = 0;
+        V.clear();
+        swap(c, a); swap(d, b);
+        if(a > b) swap(a, b), swap(c, d), Op = 1;
+        bool flag = find(a, b, c, d);
+        if(!flag) printf("No\n");
+        else{
+            printf("Yes\n");
+            reverse(V.begin(), V.end());
+            for(int i = 0; i < V.size(); i++){
+                if(Op == 0){
+                    if(V[i] == 1)
+                        printf("B");
+                    else
+                        printf("A");
+                }else{
+                    if(V[i] == 0)
+                        printf("B");
+                    else
+                        printf("A");
+                }
+            }
+            printf("\n");
+        }
+    }
     return 0;
 }

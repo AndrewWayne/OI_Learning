@@ -47,21 +47,37 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
+/* ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+const int maxn = 5000;
 const int MOD = 1e9 + 7;
-const int maxn = 3e3 + 10;
-ll c[maxn], f[maxn][2], l[maxn], r[maxn];
-int t, n;
+int n, base;
+char s[maxn];
+ll f1[maxn], f2[maxn];
+string suffix[maxn], preix[maxn];
+string ans;
 int main(){
-    t = read();
-    while(t--){
-        n = read();
-        for(int i = 1; i < n; i++) c[i] = read();
-        for(int i = 1; i <= n; i++){
-            l[i] = max(0, c[i] )
-        }
-        for(int i = n; i >= 1; i--){
-            f[i][0] =
-        }
+    ios::sync_with_stdio(false);
+    cin >> n;
+    base = rand()%MOD;
+    for(int i = 1; i <= n; i++) cin >> s[i];
+    for(int i = 1; i <= n; i++)
+        preix[i] = s[i] + preix[i-1];
+    for(int i = n; i >= 1; i--)
+        suffix[i] = s[i] + suffix[i+1];
+    int l = 1, r = n;
+    while(l <= r){
+        if(suffix[l] < preix[r]) printf("%c", s[l]), l++;
+        else printf("%c", s[r]), r--;
     }
+
     return 0;
 }

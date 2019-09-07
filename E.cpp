@@ -47,21 +47,21 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int MOD = 1e9 + 7;
-const int maxn = 3e3 + 10;
-ll c[maxn], f[maxn][2], l[maxn], r[maxn];
-int t, n;
+int t, n, m, k, x, y;
+int dg[330];
 int main(){
     t = read();
     while(t--){
-        n = read();
-        for(int i = 1; i < n; i++) c[i] = read();
-        for(int i = 1; i <= n; i++){
-            l[i] = max(0, c[i] )
+        memset(dg, 0, sizeof(dg));
+        n = read(), m = read(), k = read();
+        for(int i = 1; i <= m; i++){
+            x = read(), y = read();
+            dg[x]++, dg[y]++;
         }
-        for(int i = n; i >= 1; i--){
-            f[i][0] =
-        }
+        x = dg[1];
+        for(int i = 1; i <= n; i++) x = min(x, dg[i]);
+        if(m >= (n-1)*k && x >= k) printf("NO\n");
+        else printf("YES\n");
     }
     return 0;
 }

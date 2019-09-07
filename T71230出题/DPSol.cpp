@@ -22,7 +22,7 @@ const int maxv = 32;
 long long n, K, a[maxn], choose[maxv], val[maxv];//dp[n][k]表示在n之前分k组的最大值，val[i]表示第i位的决策点到i的or和，choose[i]表示在第i位上的决策点
 char name[100];
 int main(){
-    //for(int iii = 1; iii <= 10; iii++){
+    for(int iii = 12; iii <= 12; iii++){
     sprintf(name, "dp%d.in", iii);
     freopen(name, "r", stdin);
     sprintf(name, "dp%d.out", iii);

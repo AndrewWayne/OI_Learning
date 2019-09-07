@@ -1,33 +1,28 @@
+#include <cstdio>
 #include<iostream>
-#include<cstdio>
-#include<algorithm>
-#include<cmath>
-#include<cstring>
+#include<cstdlib>
 using namespace std;
-char num1[501],num2[501];
-int numb1[505], numb2[505];
-int ans[502];
-int a;
-int main(){
-	cin>>num1;
-	cin>>num2;
-	int len1 = strlen(num1), len2 = strlen(num2);
-	int len = max(len1, len2);
-	for(int i = len1-1; i >= 0; i--){
-		numb1[len1-i] = (num1[i] - '0');
-	}
-	for(int i = len2-1; i >= 0; i--)
-		numb2[len2-i] = num2[i] - '0';
-	for(int i=1;i<=len;i++){
-		ans[i] += numb1[i] + numb2[i];
-		if(ans[i]>9){
-		   ans[i] %= 10;
-		   ans[i+1]++;
-		}
-		cerr << ans[i] << endl;
-	}
-
-	for(int i=len;i>=1;i--)
-		cout<<ans[i];
-return 0;
+#define ll long long
+const int maxn = 5005005;
+int p[maxn],a[maxn];
+int main(void) {
+	freopen("dp11.in", "r", stdin);
+    int n,k; scanf("%d%d",&n,&k);
+    assert(10 <= n*k && n*k <= 5000000);
+    for (int i=1;i<=n;i++) {
+        scanf("%d",&p[i]);
+        assert(10 <= p[i] && p[i] <= 1e7);
+    }
+    ll ans=0;
+    sort(p+1,p+n+1,greater<int>());
+    for (int i=1;i<=n;i++) {
+        int mx=0,id=0;
+        for (int j=1;j<=k;j++) {
+            if ((p[i]&(p[i]^a[j])) > mx) mx=p[i]&(p[i]^a[j]), id=j;
+        }
+        if (id) a[id] |= p[i];
+    }
+    for (int i=1;i<=k;i++) ans += a[i];
+    printf("%lld\n",ans);
+    return 0;
 }
