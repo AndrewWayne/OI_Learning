@@ -9,7 +9,8 @@ ll f[2][maxn][maxn][2000], a[maxn];
 //f[b][i][x][sum] 表示[1,i]以数x结尾，且x小于前一个数，前缀和为sum的方案数
 ll lessthan[maxn], bigthan[maxn], ans;
 inline ll Mod(ll x){
-    return x >= MOD ? x-MOD : x;
+    while(x >= MOD) x -= MOD;
+    return x;
 }
 inline int val(int x){
     return x == -1 ? 40 : x;
@@ -31,22 +32,23 @@ int main(){
     for(int i = 2; i <= n-1; i++)
         if(a[i-1] > a[i] && a[i-1] != -1 && a[i] != -1) bigthan[i+1] = a[i];//表示a[i+1]必须大于等于a[i]
     f[0][0][0][0] = 1;
-    for(int i = 0; i < n; i++){
-        if(a[i+1] == -1){
-            for(int k = bigthan[i+1]; k <= lessthan[i+1]; k++){
-                for(int sum = k*i; sum <= 1600; sum++){
+    for(int i = 1; i <= n; i++){
+        if(a[i] == -1){
+            for(int k = bigthan[i]; k <= lessthan[i]; k++){
+                for(int sum = k*(i-1); sum <= 1600; sum++){
                     for(int x = 0; x <= 40; x++){
-                        if(k >= x) f[0][i+1][k][k+sum] = Mod(f[0][i+1][k][k+sum] + f[0][i][x][sum] + f[1][i][x][sum]);
-                        else f[1][i+1][k][k+sum] = Mod(f[1][i+1][k+1][k+sum] + f[0][i][x][sum]);
+                        if(k >= x) f[0][i][k][k+sum] = Mod(f[0][i][k][k+sum] + f[0][i-1][x][sum] + f[1][i-1][x][sum]);
+                        else f[1][i][k][k+sum] = Mod(f[1][i][k][k+sum] + f[0][i-1][x][sum]);
                     }
                 }
             }
         }else{
-            for(int sum = a[i+1]*i; sum <= 1600; sum++)
+            for(int sum = a[i]*(i-1); sum <= 1600; sum++){
                 for(int x = 0; x <= 40; x++){
-                    if(a[i+1] >= x) f[0][i+1][a[i+1]][a[i+1]+sum] = Mod(f[0][i+1][a[i+1]][a[i+1]+sum] + f[0][i][x][sum] + f[1][i][x][sum]);
-                    else f[1][i+1][a[i+1]][a[i+1]+sum] = Mod(f[1][i+1][a[i+1]][a[i+1]+sum] + f[0][i][x][sum]);
+                    if(a[i] >= x) f[0][i][a[i]][a[i]+sum] = Mod(f[0][i][a[i]][a[i]+sum] + f[0][i-1][x][sum] + f[1][i-1][x][sum]);
+                    else f[1][i][a[i]][a[i]+sum] = Mod(f[1][i][a[i]][a[i]+sum] + f[0][i-1][x][sum]);
                 }
+            }
         }
     }
     for(int i = 0; i <= 40*n; i++)

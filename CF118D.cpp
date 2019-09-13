@@ -59,12 +59,39 @@ ll mul(ll a, ll b, ll p){
     return a;
 }
 */
-int n1, n2, k1, k2, f[2][220][110][11];//f[p][i][s1][k] 表示摆到第 i 个，已经放了 s1 个骑兵，当前前面连续摆了k个（骑兵-1/步兵-0）
+int n1, n2, k1, k2, ans, f[110][110][20][20];//f[p][i][s1][k] 表示摆到第 i 个，已经放了 s1 个骑兵，当前前面连续摆了k个（骑兵-1/步兵-0）
 //f[1][i][s1][k] = f[1][i-1][s1-1][k-1] , 对于k = 1，特判：f[1][i][s1][1] = sum(f[0][i-1][s1-1][0~k1]) 其中枚举s1的范围是max(0, i-n1)~min(i, n1), k的枚举范围可以从max(0, i-n1) ~ k1或k2
+void Mod(int &x){
+    while(x >= MOD) x -= MOD;
+    if(x < 0) x += MOD;
+    return;
+}
 int main(){
     n1 = read(), n2 = read(), k1 = read(), k2 = read();
-    for(int i = 1; i <= n1+n2; i++){
-        for(int j = 1; j <= )
-    }
+    f[1][0][1][0] = f[0][1][0][1] = 1;
+    for(int i = 0; i <= n1; i++)
+        for(int j = 0; j <= n2; j++)
+            for(int k = 0; k <= min(i, k1); k++)
+                for(int l = 0; l <= min(j, k2); l++){
+                    if((!k && !l) || (k && l)) continue;
+                    if(k){
+                        f[i+1][j][k+1][l] += f[i][j][k][l];
+                        Mod(f[i+1][j][k+1][l]);
+                        f[i][j+1][0][1] += f[i][j][k][l];
+                        Mod(f[i][j+1][0][1]);
+                    }else{
+                        f[i][j+1][k][l+1] += f[i][j][k][l];
+                        Mod(f[i][j+1][k][l+1]);
+                        f[i+1][j][1][0] += f[i][j][k][l];
+                        Mod(f[i+1][j][1][0]);
+                    }
+                }
+    for(int i = 0; i <= min(n1, k1); i++)
+        for(int j = 0; j <= min(n2, k2); j++){
+            if((!i && !j) || (i && j)) continue;
+            ans += f[n1][n2][i][j];
+            Mod(ans);
+        }
+    cout << ans << endl;
     return 0;
 }
