@@ -64,6 +64,7 @@ int t, n, top, top2;
 db p, w[maxn], h[maxn], maxl[maxn], minl[maxn];
 pair<db,db> sege[maxn], sege1[2][maxn];
 int main(){
+    freopen("c.in", "r", stdin);
     scanf("%d", &t);
     for(int kkk = 1; kkk <= t; kkk++){
         top2 = top = 0;
@@ -94,7 +95,6 @@ int main(){
             //cerr << "kkk" << endl;
             for(int j = 1; j <= top; j++){
                 if(sege1[0][j].first > sege1[1][top2].second){
-
                     sege1[1][++top2].first = sege1[0][j].first;
                     sege1[1][top2].second = sege1[0][j].second;
 
@@ -105,11 +105,12 @@ int main(){
             }
             top = top2, top2 = 0;
         }
+        //cerr << pp << endl;
         bool outputed = 0;
         for(int i = 1; i <= top; i++){
             //cerr << sege1[0][i].first << " " << sege1[0][i].second << endl;
             //cerr << pp << endl;
-            if(pp - sege1[0][i].first >= eps && sege1[0][i].second - pp >= eps){
+            if(pp - sege1[0][i].first >= -eps && sege1[0][i].second - pp >= -eps){
                 //cout << kkk << endl;
                 printf("Case #%d: %.6Lf\n", kkk, p);
                 outputed = 1;
