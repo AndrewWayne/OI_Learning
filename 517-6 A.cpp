@@ -73,6 +73,14 @@ int main(){
     t = read();
     while(t--){
         n = read();
+        if(n == 2){
+            printf("1\n");
+            continue;
+        }
+        if(n == 4){
+            printf("2\n");
+            continue;
+        }
         if(check(n)) printf("%d\n", n-1);
         else printf("0\n");
     }

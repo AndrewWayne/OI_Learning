@@ -61,7 +61,7 @@ ll mul(ll a, ll b, ll p){
 const int maxn = 1e5 + 10;
 const int maxm = 2e6 + 10;
 int s, d[maxn], a[maxn], b[maxn], ans;
-int times[maxn], 
+
 //int max1[maxm], max2[maxm];
 int check(int len){
     int sol = 0;
