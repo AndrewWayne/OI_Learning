@@ -64,10 +64,10 @@ ll mul(ll a, ll b, ll p){
 int n, m, x, y, cnt;
 vector<int> couple[maxn];
 vector<int> E[maxn];
-set<pii> sege;
-pii S[maxn], top;
+//set<pii> sege;
+
 int L[maxn], R[maxn], node[maxn];
-int ans[maxn];
+int ans[maxn], sum[maxn << 2], tags[maxn << 2];
 void dfs1(int x, int fa){
     node[++cnt] = x;
     L[x] = cnt;
@@ -76,35 +76,59 @@ void dfs1(int x, int fa){
             dfs1(*i, x);
     R[x] = cnt;
 }
-void dfs(int x, int fa, int al, int ar){
-    //cerr << x << endl;
-    if(couple[x].size() > 0){
-        al = min(L[x], al), ar = max(R[x], ar);
-        for(auto i = couple[x].begin(); i != couple[x].end(); i++){
-            if(L[*i] >= al && R[*i] <= ar) continue;
-            sege.insert(make_pair(L[*i], R[*i]));
-        }
-        //stack<pii> S;
+void pushUp(int rt, int l, int r){
+    if(tags[rt] > 0)//如果这是个塞苹果的区间就把这段区间全部置1，tags的意义只有有放和没放，记录值只是为了可以回溯
+        sum[rt] = r - l + 1;
+    else if(l == r)//如果这是个不带塞苹果的子节点，直接置零
+        sum[rt] = 0;
+    else
+        sum[rt] = sum[rt << 1] + sum[rt << 1|1];//非子节点，自己也没前途的就从子节点里合并，看看后浪能不能推前浪
+}
+void Upd(int L, int R, int val, int l, int r, int rt){
+    //cerr << "##: " << rt << endl;
+    //cerr << l << " " << r << endl;
+    //cerr << L << " " << R <<endl;
+    if(L <= l && r <= R){
+        tags[rt] += val;//标记永久化
+        pushUp(rt, l, r);
+        return;
     }
+    int mid = (l + r) >> 1;
+    if(L <= mid) Upd(L, R, val, l, mid, rt << 1);
+    if(R > mid) Upd(L, R, val, mid+1, r, rt << 1 | 1);
+    pushUp(rt, l, r);
+}
+void dfs(int x, int fa){
+    //cerr << "$$ " << x << endl;
+    if(couple[x].size() > 0)
+        //al = min(L[x], al), ar = max(R[x], ar);
+        for(auto i = couple[x].begin(); i != couple[x].end(); i++){
+            //cerr << *i << endl;
+            Upd(L[*i], R[*i], 1, 1, n, 1);//给[L, R]这段区间赋上值
+
+        }
+            //if(L[*i] >= al && R[*i] <= ar) continue;
+            //sege.insert(make_pair(L[*i], R[*i]));
+        //stack<pii> S;
+    //cerr << x << endl;
+    ans[x] = sum[1];//整棵树上有赋值的区间
+    /*
     //cerr << al << " " << ar << endl;
     int l = 1, r = 0;
     for(auto i = sege.begin(); i != sege.end(); i++){
-        if(i->first > r){
-            ans[x] += r - l + 1;
-            if(l <= r) S[++top] = make_pair(l, r);
-            l = i -> first;
-            r = i -> second;//, cerr << "$: " << l << " " << r << endl;
-        }else r = max(r, i -> second);
+        if(i->first > r) ans[x] += r - l + 1, l = i -> first, r = i -> second;//, cerr << "$: " << l << " " << r << endl;
+        else r = max(r, i -> second);
     }
+
     ans[x] += r - l + 1;
-    S[++top] = make_pair(l, r);
-    sege.clear();
-    for(int i = 1; i <= )
 //    if(x == 9) cerr << l << " " << r << endl;
     if(ar >= al)
-        ans[x] += ar - al ;
+        ans[x] += ar - al;*/
     for(auto i = E[x].begin(); i != E[x].end(); i++)
-        if(*i != fa) dfs(*i, x, al, ar);
+        if(*i != fa) dfs(*i, x);
+    if(couple[x].size() > 0)
+        for(auto i = couple[x].begin(); i != couple[x].end(); i++)
+            Upd(L[*i], R[*i], -1, 1, n, 1);//回溯，把这个点的影响消掉
 }
 int main(){
     n = read(), m = read();
@@ -116,11 +140,19 @@ int main(){
     for(int i = 1; i <= m; i++){
         x = read(), y = read();
         couple[x].push_back(y);
+        couple[x].push_back(x);
         couple[y].push_back(x);
+        couple[y].push_back(y);
     }
+    //cerr << n << endl;
     dfs1(1, 0);
-    dfs(1, 0, n, 1);
+    //for(int i = 1; i <= n; i++){
+        //cerr << L[i] << " " << R[i] << endl;
+    //}
+    //cerr << cnt << endl;
+    dfs(1, 0);
+    //cerr << n << endl;
     for(int i = 1; i <= n; i++)
-        printf("%d ", ans[i]);
+        printf("%d ", max(1, ans[i]) - 1);
     return 0;
 }

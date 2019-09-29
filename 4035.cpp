@@ -50,27 +50,24 @@ using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
 const int MAXN = 10 + 4;//维数
-const int N = 300;//总迭代次数
-const int L = 120;//退火次数
-const db M = 3.0;//退火幂次
-const db C = 2;//两须距离与步长比
-const db EPS = 5e-7;
+const int N = 200;//总迭代次数
+const int L = 100;//退火次数
+const db C = 2.0;//两须距离与步长比
+const db EPS = 1e-4;
 const int maxn = 2e3 + 10;
-db alpha = 0.78;//步长因子
-const db STEP = 14140;
+const db alpha = 0.95;//步长因子
+const db STEP = 20000;
 struct Beetle{
     db stat[MAXN];
     db step, val;
     int age;
 };
 Beetle bettles;
-int dim, n, m;//
-db sol[MAXN], fminv, sl[MAXN], sr[MAXN];
-db fleft, fright, Tempr;// Tempr为退火温度
-db X[maxn], Y[maxn], len[maxn];
-db temp[MAXN], timelim;
-int kkkk;
-db beta;// 退火因子
+int dim, nn, m;//
+db sol[MAXN], fminv, sl[MAXN], sr[MAXN], birthnum;
+db fleft, fright, Tempr, beta;//beta为退火因子， Tempr为退火温度
+db X[MAXN][MAXN], len[maxn];
+db temp[MAXN];
 int sign(db x){
     if(x < 0.0) return -1;
     else return 1;
@@ -80,11 +77,15 @@ int rdm(int a, int b){
 }
 db F(db s[]){
     db res = 0;
-    for(int i = 1; i <= n; i++){
-        len[i] = (X[i] - s[1]) * (X[i] - s[1]) + (Y[i] - s[2]) * (Y[i] - s[2]);
+    for(int i = 1; i <= dim+1; i++){
+        db val = 0;
+        for(int j = 1; j <= dim+1; j++)
+            val += (X[i][j] - s[j]) * (X[i][j] - s[j]);
+        temp[i] = sqrt(val);
     }
-    sort(len+1, len+1+n);
-    return sqrt(len[m]);
+    sort(temp+1, temp+2+dim);
+    for(int i = 2; i <= dim+1; i++) res = temp[i] - temp[i-1];
+    return res;
 }
 void RAND(db A[]){
     db len = 0;
@@ -95,15 +96,14 @@ void RAND(db A[]){
 }
 double Time(){return (double)clock()/CLOCKS_PER_SEC;}
 void SABAS(){
-    int cnt = 1;
-    bettles.val =  2147483647;
+    bettles.val = 2147483647.0;
     bettles.step = STEP;
     beta = alpha;
     for(int i = 1; i <= dim; i++)
         bettles.stat[i] = sol[i] + rdm(-100, 100) / 100.0;
-    Tempr = STEP*10;
-    for(int i = 1; i <= N && Time() < timelim*kkkk; i++){
-        bettles.step = Tempr/10;
+    Tempr = STEP;
+    for(int i = 1; i <= N && Time() < 0.8; i++){
+        bettles.step = Tempr;
         for(int j = 1; j <= L; j++){
             if(bettles.step <= EPS) break;
             db b[MAXN];
@@ -116,7 +116,7 @@ void SABAS(){
             for(int k = 1; k <= dim; k++){
                 sl[k] = bettles.stat[k] + d * b[k] / C;
                 sr[k] = bettles.stat[k] - d * b[k] / 2.0;
-                if(abs(sr[k]) > 10000.0 || abs(sl[k]) > 10000.0){//修改函数定义域
+                if(abs(sr[k]) > 20000.0 || abs(sl[k]) > 20000.0){//修改函数定义域
                     BeyondDim = true;
                     break;
                 }
@@ -126,7 +126,7 @@ void SABAS(){
             fright = F(sr);
             for(int k = 1; k <= dim; k++){
                 temp[k] = bettles.stat[k] - step * b[k] * sign(fleft - fright);
-                if(abs(temp[k]) > 10000.0){//函数定义域
+                if(abs(temp[k]) > 20000.0){//函数定义域
                     BeyondDim = true;
                     break;
                 }
@@ -155,43 +155,29 @@ void SABAS(){
             memcpy(sol, bettles.stat, sizeof(sol));
             beta = alpha;
         }else{
-            beta = alpha - 0.3 * ((i + 1) / (5 * N) + 0.5);
+            beta = alpha - 0.2 * ((i + 1) / (5 * N) + 0.5);
         }
-        if(abs(bettles.val - fminv) <= 2*EPS)
-            cnt++;
-        else if(bettles.val < fminv) cnt = 1;
-        if(cnt >= 9) break;
         Tempr *= beta;
-        //cerr << fminv << endl;
+
+        cerr << fminv << endl;
     }
 
 }
 int main(){
-    freopen("fagttering17.in", "r", stdin);
-//    beta[1] = alpha;
-//    for(int i = 2; i <= 300; i++)
-//        beta[i] = pow((db)(i-1)/i, M);
+    //freopen("fagttering17.in", "r", stdin);
     srand(time(0));
-    dim = 2;
-    scanf("%d%d", &n, &m);
-    for(int i = 1; i <= n; i++)
-        scanf("%lf%lf", &X[i], &Y[i]);
-    //db ACRate = 0;
-    //for(int i = 1; i <= 10; i++){
-        fminv = 2147483647;
-        if(n <= 50) timelim = 0.8, alpha = 0.88;
-        else if(n <= 500) timelim = 2.8, alpha = 0.85;
-        else timelim = 2.8, alpha = 0.75;
-        kkkk = 1;
-        //kkkk = i;
-        while(Time() < timelim*kkkk){
-            SABAS();
-        }
-        printf("%.8f\n", fminv);
-        //if(abs(fminv - 98.05724505) <= 1e-6) ACRate += 1.0;
-    //}
-    //ACRate /= 10.0;
-    //printf("ACRate: %f\n", ACRate);
+    scanf("%d", &dim);
+    for(int i = 1; i <= dim+1; i++)
+        for(int j = 1; j <= dim+1; j++)
+            scanf("%lf", &X[i][j]);
+    fminv = 2147483647;
+    while(Time() < 0.8){
+        SABAS();
+    }
+    printf("%.3f\n", fminv);
+    for(int i = 1; i <= dim; i++){
+        printf("%.3f ", sol[i]);
+    }
     //for(int i = 1; i <= n; i++)
     //    cout << sol[i] << " ";
     return 0;
