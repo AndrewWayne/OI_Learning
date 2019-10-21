@@ -1,7 +1,7 @@
 /*
  * Author: xiaohei_AWM
- * Date:
- * Mutto: Face to the weakness, expect for the strength.
+ * Date: 10.13
+ * Motto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
 #include<cstring>
@@ -47,16 +47,23 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-int a[10];
+/*
+ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+int a, b, c, d;
+double x, y;
+
 int main(){
-    srand(time(0));
-    cout << 7 << endl;
-    for(int i = 1; i <= 6; i++){
-        int l = 1 + rand()%29;
-        int r = rand()%(30-l) + l;
-        cout << l << " " << r << endl;
-    }
-    int l = 1 + rand()%29;
-    cout << l << " " << l << endl;
+    cin >> a >> b >> c >> d;
+    x = (db)a/b, y = (db)c/d;
+    printf("%.8f\n", x/(1 - (1.0 - x)*(1.0 - y)));
     return 0;
 }

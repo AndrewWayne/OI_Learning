@@ -3,7 +3,7 @@ const int MAX_V = 100004;
 //v、n、w：当前所处理的这类物品的体积、个数、价值
 //V：背包体积， MAX_V：背包的体积上限值
 //f[i]：体积为i的背包装前几种物品，能达到的价值上限。
-inline void pack(int f[], int V, int c, int n, int w){// v是体积，w是价值
+inline void pack(int f[], int V, int c, int n, int w){// c是体积，w是价值
     if (n == 0 || c == 0) return;
     if (n == 1){               //01背包
         for (int i = V; i >= c; --i)

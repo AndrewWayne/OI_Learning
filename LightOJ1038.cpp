@@ -1,6 +1,6 @@
 /*
  * Author: xiaohei_AWM
- * Date:
+ * Date: 10.13
  * Motto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
@@ -58,14 +58,9 @@ ll mul(ll a, ll b, ll p){
     return a;
 }
 */
-int n, p;
+const int maxn =
+double F[maxn]
 int main(){
-    n = 100;
-    int w1 = 1, w2 = 0;
-    for(int i = 1; i <= n; i++){
-        cout << w1 << " " << w1 << endl;
-        w1 = w1*1.414 + 1;
-    }
-    
+
     return 0;
 }

@@ -87,6 +87,7 @@ int LCA(int x, int y){
     return fa[x][0];
 }
 int main(){
+    cerr << sizeof(dis) << endl;
     n = read(), m = read(), s =read();
     for(int i = 1; i <= n-1; i++)
         u = read(), v = read(), len = read(),

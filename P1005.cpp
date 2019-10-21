@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #define maxx(a,b) a>b?a:b
-#define kk m-r+l
+#define kk (m-r+l)
 using namespace std;
 
 __int128 powwTwo[81];
@@ -18,15 +18,15 @@ void print(__int128 x){
         return;
     if(x)
         print(x/10);
-    putchar(x%10+'0')
+    putchar(x%10+'0');
 }
 
 __int128 dp(int l,int r,int id){
     if(f[l][r] != -1)
         return f[l][r];
     if(r-l >= 1)
-        f[l][r] = maxx(dp(l+1, r, id) + a[id][l] * powwTwo[kk], dp(l, r-1, id) + a[id][r] * powwTwo[kk]);
-    else f[l][r] = a[id][l] * powwTwo[kk];
+        f[l][r] = maxx(dp(l+1, r, id) + a[id][l] * kk, dp(l, r-1, id) + a[id][r] * kk);
+    else f[l][r] = a[id][l] * kk;
     return f[l][r];
 }
 
