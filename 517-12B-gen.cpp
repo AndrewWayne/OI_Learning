@@ -1,7 +1,7 @@
 /*
  * Author: xiaohei_AWM
- * Date:5.20
- * Mutto: Face to the weakness, expect for the strength.
+ * Date:
+ * Motto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
 #include<cstring>
@@ -45,28 +45,31 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e6 + 10;
-int n, a[maxn];
-pii ANS[maxn];
+const long long llINF = 9223372036854775807;
+const int INF = 2147483647;
+/*
+ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+int x;
 int main(){
-    freopen("treepro.in", "w", stdout);
+    cin >> x;
     srand(time(0));
-    puts("100000");
-    n = 10;
-    /*造树
-    for(int i = 1; i <= n; i++)
-        a[i] = i;
-    random_shuffle(a+1, a+1+n);
-    for(int i = 2; i <= n; i++)
-        ANS[i-1].first = a[rand()%(i-1) + 1], ANS[i-1].second = a[i];
-    random_shuffle(ANS+1, ANS+n);
-    //*/
-
-    //*造链
-    for(int i = 1; i < n; i++)
-        ANS[i].first = i, ANS[i].second = i+1;
-    //*/
-    for(int i = 1; i < n; i++)
-        printf("%d %d\n", ANS[i].first, ANS[i].second);
+    printf("7 4\n");
+    for(int i = 1; i <= 6; i++) printf("%d ", rand() % 13 + 1);
+    printf("\n");
+    for(int i = 1; i <= 7; i++){
+        for(int j = 1; j <= 4; j++){
+            printf("%d ", rand() % 13 + 1);
+        }
+        printf("\n");
+    }
     return 0;
 }

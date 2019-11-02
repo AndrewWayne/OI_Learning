@@ -1,7 +1,7 @@
 /*
  * Author: xiaohei_AWM
- * Date:5.20
- * Mutto: Face to the weakness, expect for the strength.
+ * Date: 10.25
+ * Motto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
 #include<cstring>
@@ -45,28 +45,47 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e6 + 10;
-int n, a[maxn];
-pii ANS[maxn];
+const long long llINF = 9223372036854775807;
+const int INF = 2147483647;
+/*
+ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+const int maxn = 1e5 + 10;
+int n, q, opt, x;
+ll a[3][maxn], y, s[2], ans;
+void add(int pos, ll val, int opt){
+    ans += val * (a[opt^1][pos] * n - s[opt^1]);
+    s[opt] += val;
+    a[opt][pos] += val;
+}
 int main(){
-    freopen("treepro.in", "w", stdout);
-    srand(time(0));
-    puts("100000");
-    n = 10;
-    /*造树
+    //freopen("517-11.in", "r", stdin);
+    n = read(), q = read();
+    for(int i = 1; i <= n; i++){
+        a[0][i] = readll();
+        s[0] += a[0][i];
+    }
+    //cerr << sa << endl;
+    for(int i = 1; i <= n; i++){
+        a[1][i] = readll();
+        s[1] += a[1][i];
+    }
     for(int i = 1; i <= n; i++)
-        a[i] = i;
-    random_shuffle(a+1, a+1+n);
-    for(int i = 2; i <= n; i++)
-        ANS[i-1].first = a[rand()%(i-1) + 1], ANS[i-1].second = a[i];
-    random_shuffle(ANS+1, ANS+n);
-    //*/
-
-    //*造链
-    for(int i = 1; i < n; i++)
-        ANS[i].first = i, ANS[i].second = i+1;
-    //*/
-    for(int i = 1; i < n; i++)
-        printf("%d %d\n", ANS[i].first, ANS[i].second);
+        ans += a[0][i] * (a[1][i] * n - s[1]);
+    //cerr << sb << endl;
+    while(q--){
+        opt = read(), x = read(), y = readll();
+        if(opt == 1) add(x, y - a[0][x], 0);
+        if(opt == 2) add(x, y - a[1][x], 1);
+        printf("%lld\n", ans);
+    }
     return 0;
 }

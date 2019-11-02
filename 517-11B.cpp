@@ -1,19 +1,9 @@
 /*
  * Author: xiaohei_AWM
- * Date:5.20
- * Mutto: Face to the weakness, expect for the strength.
+ * Date: 10.25
+ * Motto: Face to the weakness, expect for the strength.
 */
-#include<cstdio>
-#include<cstring>
-#include<algorithm>
-#include<iostream>
-#include<cstdlib>
-#include<ctime>
-#include<utility>
-#include<functional>
-#include<cmath>
-#include<vector>
-#include<assert.h>
+#include <bits/stdc++.h>
 using namespace std;
 #define reg register
 #define endfile fclose(stdin);fclose(stdout);
@@ -45,28 +35,37 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e6 + 10;
-int n, a[maxn];
-pii ANS[maxn];
+const long long llINF = 9223372036854775807;
+const int INF = 2147483647;
+/*
+ll mul(ll a, ll b, ll p){
+    asm(
+        "mul %%ebx\n"
+        "div %%ecx"
+        : "=d"(a)
+        : "a"(a), "b"(b), "c"(p)
+    );
+    return a;
+}
+*/
+const int maxn = 1e5 + 10;
+int n, p, l, r;
+double rate[maxn], ans;
 int main(){
-    freopen("treepro.in", "w", stdout);
-    srand(time(0));
-    puts("100000");
-    n = 10;
-    /*造树
-    for(int i = 1; i <= n; i++)
-        a[i] = i;
-    random_shuffle(a+1, a+1+n);
-    for(int i = 2; i <= n; i++)
-        ANS[i-1].first = a[rand()%(i-1) + 1], ANS[i-1].second = a[i];
-    random_shuffle(ANS+1, ANS+n);
-    //*/
-
-    //*造链
-    for(int i = 1; i < n; i++)
-        ANS[i].first = i, ANS[i].second = i+1;
-    //*/
-    for(int i = 1; i < n; i++)
-        printf("%d %d\n", ANS[i].first, ANS[i].second);
+    //freopen("517-11.in", "r", stdin);
+    scanf("%d%d", &n, &p);
+    for(int i = 1; i <= n; i++){
+        scanf("%d%d", &l, &r);
+        int k1 = l/p;
+        int k2 = r/p;
+        if(l % p) k1++;
+        rate[i] = (db)(k2 - k1 + 1) / (r - l + 1);
+        //cerr << rate[i] << endl;
+    }
+    for(int i = 1; i < n; i++){
+        ans += (1.0 - (1.0 - rate[i])*(1.0 - rate[i+1])) * 2000;
+    }
+    ans += (1.0 - (1.0 - rate[1])*(1.0 - rate[n])) * 2000;
+    printf("%.9f\n", ans);
     return 0;
 }

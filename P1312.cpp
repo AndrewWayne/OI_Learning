@@ -1,97 +1,112 @@
-// luogu-judger-enable-o2
-#include <cstdio>
-#include <bitset>
-#include <algorithm>
-#define MAX(a,b) a>b?a:b
-using namespace std;
-const int maxn=2018;
-int a[30],n,m,ans;
-inline char nc()
-{
-    static char buf[100000],*p1=buf,*p2=buf;
-    return p1==p2&&(p2=(p1=buf)+fread(buf,1,100000,stdin),p1==p2)?EOF:*p1++;
-}
-inline int read()
-{
-    char ch=nc();int sum=0;
-    while(!(ch>='0'&&ch<='9'))ch=nc();
-    while(ch>='0'&&ch<='9')sum=(sum<<1)+(sum<<3)+ch-48,ch=nc();
-    return sum;
-}
-void dfs(int sum, int id, bitset<maxn> ret){//sum为当前取用砝码数，id为当前用了第几个砝码，ret用于存储当前可以称出哪些质量
-    if(sum == n - m + 1){
-        ans = MAX(ans,(int)ret.count());
-        return;
-    }
-    for(register int i = id; i <= sum + m; i++)
-        dfs(sum + 1, i + 1, ret << a[i] | ret);//合并原来（所有能称出的重量+a[i]）和（所有原来能称出的质量）这两个集合（Orz pantw）
-}
-int main(){
-    n=read(),m=read();
-    for(int i = 1; i <= n; ++i)
-        a[i]=read();
-    bitset<maxn> b;
-    b[0] = 1;
-    dfs( 1, 1, b );
-    printf("%d\n", --ans);//由于不包括0所以-1
-    return 0;
-}
-/*
-//60分爆搜
+#include <cstring>
 #include <cstdio>
 #include <iostream>
-#include <algorithm>
-#include <map>
+#include <cstdlib>
 using namespace std;
-int n,m,a[30],b[30],ans,half,top;
-map < int , int > weight[5000];
-void dfs1(register int sum,register int m,int id){
-    weight[id][sum] = 520;
-    if( m == half+1) return;//half=3/4n
-    dfs1( sum , m+1 , id );
-    if( b[m] )return;
-    dfs1( sum + a[m] , m + 1 , id );
+int n, x, mp[10][10], history[10][10][10];//mp[x][y] x为列标 y为行标
+pair<int, pair<int,int> > sol[10];
+bool tag[5][7];
+bool remove(){
+	memset(tag, 0, sizeof(tag));
+	bool flg = false;
+	for(int i = 0; i < 5; i++){
+		for(int j = 0; j < 7; j++){
+			if(i > 0 && i < 4 && mp[i-1][j] == mp[i][j] && mp[i][j] == mp[i+1][j] && mp[i][j]){
+				tag[i-1][j] = tag[i][j] = tag[i+1][j] = 1;
+				flg = true;
+			}
+			if(j > 0 && j < 6 && mp[i][j-1] == mp[i][j] && mp[i][j] == mp[i][j+1] && mp[i][j]){
+				tag[i][j-1] = tag[i][j] = tag[i][j+1] = 1;
+				flg = true;
+			}
+		}
+	}
+	for(int i = 0; i < 5; i++){
+		for(int j = 0; j < 7; j++){
+			if(tag[i][j]) mp[i][j] = 0;
+		}
+	}
+	return flg;
 }
-bool dfs2(register int sum,register int m,register int want, int id){
-    bool ret=false;
-    if(weight[id][ want-sum ] == 520)
-        return true;
-    if( m == n+1) return false;
-    ret |= dfs2( sum , m+1 ,want ,id);
-    if( b[m] ) return ret;
-    if( sum + a[m] <= want)
-        ret |= dfs2( sum + a[m] , m+1 ,want ,id);
-    return ret;
+void update(){
+	for(int i = 0; i < 5; i++){
+		int low = 0;
+		for(int j = 0; j < 7; j++){
+			if(mp[i][j] == 0) low++;
+			else{
+				if(!low) continue;
+				mp[i][j - low] = mp[i][j];;
+				mp[i][j] = 0;
+			}
+		}
+	}
 }
-int sum(int id){
-    register int result=0,maxn=0;
-    dfs1( 0, 1 , id );
-    for(register int i = 1; i <= n; i++)
-        if(!b[i])
-            maxn += a[i];
-    for(register int i = 1; i <= maxn; i++)
-        if(dfs2(0, half+1 ,i , id))result++;
-    return result;
+void move(int x, int y, int d){
+	swap(mp[x+d][y], mp[x][y]);
+	update();
+	while(remove()) update();
 }
-void solution(register int num,register int id){
-    if(num == m){
-        ans = max( ans , sum( ++top ) );
-        return;
-    }
-    for(register int i = id; i <= n ; i++)
-        if( !b[i] ){
-            b[i] = true;
-            solution( num + 1 , i );
-            b[i] = false;
-        }
+bool check(){
+	bool flg = 1;
+	for(int i = 0; i < 5; i++){
+		if(mp[i][0] != 0) return false;
+	}
+	return true;
 }
+void dfs(int id){
+	if(check()){
+		for(int i = 1; i <= id; i++){
+			//cerr << "YES" << endl;
+			printf("%d %d %d\n", sol[i].first, sol[i].second.first, sol[i].second.second);
+		}
+		exit(0);
+	}
+	if(id == n) return;
+	for(int i = 0; i < 5; i++)
+		for(int j = 0; j < 7; j++)
+			history[id][i][j] = mp[i][j];
+	for(int i = 0; i < 5; i++){
+		for(int j = 0; j < 7; j++){
+			if(mp[i][j] != 0){
+				if(i < 4 && mp[i][j] != mp[i+1][j]){
+					move(i, j, 1);
+					sol[id+1].first = i, sol[id+1].second.first = j, sol[id+1].second.second = 1;
+					dfs(id + 1);
+					for(int i = 0; i < 5; i++){
+						for(int j = 0; j < 7; j++)
+							mp[i][j] = history[id][i][j];
+					}
+					sol[id+1].first = -1, sol[id+1].second.first = -1, sol[id+1].second.second = -1;
+				}
+
+				if(i >= 1 && mp[i-1][j] == 0){
+					move(i, j, -1);
+					sol[id+1].first = i, sol[id+1].second.first = j, sol[id+1].second.second = -1;
+					dfs(id + 1);
+					for(int i = 0; i < 5; i++)
+						for(int j = 0; j < 7; j++)
+							mp[i][j] = history[id][i][j];
+
+					sol[id+1].first = -1, sol[id+1].second.first = -1, sol[id+1].second.second = -1;
+				}
+
+			}
+		}
+	}
+}
+double Time(){return (double)clock()/CLOCKS_PER_SEC;}
 int main(){
-    cin>> n >> m;
-    half=n*3/4;
-    for(int i = 1; i <= n; i++)
-        cin>>a[i];
-    solution( 0 , 1 );//复杂度应该是O(C(n,m)*(2^(3/4*n)+2^(1/4*n)*sum(ai)))
-    cout << ans;
-    return 0;
+	scanf("%d", &n);
+	for(int i = 0; i < 5; i++){
+		int j = 0;
+		do{
+			scanf("%d", &x);
+			mp[i][j] = x;
+			j++;
+		}while(x != 0);
+	}
+	dfs(0);
+	printf("-1\n");
+	printf("%f\n", Time());
+	return 0;
 }
-*/

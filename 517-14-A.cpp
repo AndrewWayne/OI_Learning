@@ -1,7 +1,7 @@
 /*
  * Author: xiaohei_AWM
- * Date:5.20
- * Mutto: Face to the weakness, expect for the strength.
+ * Date: 11.2
+ * Motto: Face to the weakness, expect for the strength.
 */
 #include<cstdio>
 #include<cstring>
@@ -45,28 +45,39 @@ namespace IO{
     }
 }
 using namespace IO;
-const int maxn = 1e6 + 10;
-int n, a[maxn];
-pii ANS[maxn];
+const long long llINF = 9223372036854775807;
+const int INF = 2147483647;
+const int maxn = 3e5 + 10;
+int n, ans[maxn], num[maxn], cnt[maxn], x;
+vector<int> obj;
 int main(){
-    freopen("treepro.in", "w", stdout);
-    srand(time(0));
-    puts("100000");
-    n = 10;
-    /*造树
-    for(int i = 1; i <= n; i++)
-        a[i] = i;
-    random_shuffle(a+1, a+1+n);
-    for(int i = 2; i <= n; i++)
-        ANS[i-1].first = a[rand()%(i-1) + 1], ANS[i-1].second = a[i];
-    random_shuffle(ANS+1, ANS+n);
-    //*/
-
-    //*造链
-    for(int i = 1; i < n; i++)
-        ANS[i].first = i, ANS[i].second = i+1;
-    //*/
-    for(int i = 1; i < n; i++)
-        printf("%d %d\n", ANS[i].first, ANS[i].second);
+    n = read();
+    for(int i = 1; i <= n; i++){
+        x = read(), cnt[x]++;
+    }
+    x = 0;
+    for(int i = 1; i <= n; i++){
+        if(cnt[i] > 0) obj.push_back(cnt[i]), x++;
+    }
+    //for(int i = 0; i < x; i++)
+    //    cerr << obj[i] << " ";
+    //cerr << endl;
+    for(int k = 1; k <= n; k++){
+        ans[k] = INF;
+        //memset(num, 0, sizoef(num));
+        for(int j = 0; j < x; j++){
+            int pos = 0, val = INF;
+            for(int i = 1; i <= k; i++)
+                if(num[i] < val) val = num[i], pos = i;
+            num[pos] += obj[j];
+        }
+        for(int i = 1; i <= k; i++){
+            //cerr << num[i] << " ";
+            ans[k] = min(ans[k], num[i]);
+            num[i] = 0;
+        }
+        //cerr << endl;
+        printf("%d ", ans[k]);
+    }
     return 0;
 }
