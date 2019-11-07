@@ -71,7 +71,7 @@ int main() {
             }
         }
 
-        for (int j = m - x[i - 1]; high[i] >= m && j <= m - 1; j++) {//跳到 m 可以由各种差一步的状态过来
+        for (int j = m - x[i - 1]; high[i] >= m && j <= m; j++) {//跳到 m 可以由各种差一步的状态过来
             if (f[i & 1][j] >= 0) {
                 f[i & 1][m] = min(f[i & 1][m], f[i & 1][j] + 1);
 

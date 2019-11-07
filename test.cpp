@@ -10,12 +10,12 @@ int f[M][1010],gao[M],di[M],sh[M],ji[M];
 bool oo,ys[M];
 int main()
 {
-//	freopen("testdata.in","r",stdin);freopen("ty.out","w",stdout);
+//	freopen("testdata (1).in","r",stdin);freopen("ty.out","w",stdout);
 	scanf("%d%d%d",&n,&m,&k);
 	for(int i=1;i<=n;i++)
 	{
 		scanf("%d%d",&sh[i],&ji[i]);
-		gao[i]=m+sh[i];
+		gao[i]=m+sh[i]+1;
 	}
 	gao[0]=m+1;
 	for(int i=1;i<=k;i++)
