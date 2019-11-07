@@ -66,7 +66,7 @@ const int maxn = 1e5 + 10;
 int n, q, x, y, top, sym[maxn];
 ll w[maxn], sum[maxn], abssum[maxn], ans;
 char opt[maxn];
-//贪心策略：最优策略一定是在两个相邻负数之间括号，把序列分成三段（怎么证明？）
+//贪心策略：右括号一定加在减号后面，这样可以让
 int sign(ll x){
     return x >= 0 ? 1 : -1;
 }

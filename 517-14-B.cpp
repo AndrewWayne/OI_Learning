@@ -62,6 +62,7 @@ const int maxn = 440;
 const ll MOD = 1e9 + 7;
 int n, c;
 ll f[maxn][maxn], a[maxn], b[maxn];
+ll sum[maxn][maxn];
 ll quickPower(ll x, int p){
     ll res = 1;
     for(int i = p; i; i >>= 1){
@@ -70,20 +71,32 @@ ll quickPower(ll x, int p){
     }
     return res;
 }
+ll Mod(ll x){
+    x %= MOD;
+    return x < 0 ? x + MOD : x;
+}
 int main(){
     n = read(), c = read();
     for(int i = 1; i <= n; i++) a[i] = read();
     for(int i = 1; i <= n; i++) b[i] = read();
+    for(int i = 1; i < maxn; i++){
+        for(int j = 0; j <= c; j++){
+            sum[i][j] = (sum[i-1][j] + quickPower(i, j)) % MOD;
+        }
+    }
     f[0][0] = 1;
     for(int i = 1; i <= n; i++){
         for(int j = 0; j <= c; j++){
             for(int p = 0; p <= j; p++){
-                f[i][j] = (f[i][j] + f[i-1][j-p] * quickPower(a[i], p) % MOD)% MOD;
+                //cerr << sum[b[i]][p] - sum[a[i]-1][p] << " ";
+                f[i][j] = (f[i][j] + f[i-1][j-p] * (Mod(sum[b[i]][p] - sum[a[i]-1][p])) % MOD)% MOD;
+
             }
             //cerr << f[i][j] << " ";
         }
         //cerr << endl;
     }
+
     printf("%lld", f[n][c]);
     return 0;
 }

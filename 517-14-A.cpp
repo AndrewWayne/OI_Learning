@@ -48,36 +48,32 @@ using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
 const int maxn = 3e5 + 10;
-int n, ans[maxn], num[maxn], cnt[maxn], x;
+int n, ans[maxn], num[maxn], cnt[maxn], sum[maxn], x, mxc, val[maxn];
 vector<int> obj;
 int main(){
+    //freopen("a.in", "r", stdin);
     n = read();
     for(int i = 1; i <= n; i++){
         x = read(), cnt[x]++;
     }
-    x = 0;
     for(int i = 1; i <= n; i++){
-        if(cnt[i] > 0) obj.push_back(cnt[i]), x++;
+        sum[cnt[i]] += cnt[i];
+        val[cnt[i]]++;
+        if(cnt[i] > 0) mxc++;
     }
-    //for(int i = 0; i < x; i++)
-    //    cerr << obj[i] << " ";
-    //cerr << endl;
-    for(int k = 1; k <= n; k++){
-        ans[k] = INF;
-        //memset(num, 0, sizoef(num));
-        for(int j = 0; j < x; j++){
-            int pos = 0, val = INF;
-            for(int i = 1; i <= k; i++)
-                if(num[i] < val) val = num[i], pos = i;
-            num[pos] += obj[j];
-        }
-        for(int i = 1; i <= k; i++){
-            //cerr << num[i] << " ";
-            ans[k] = min(ans[k], num[i]);
-            num[i] = 0;
-        }
-        //cerr << endl;
-        printf("%d ", ans[k]);
+    val[0] = 0;
+    for(int i = 1; i <= n; i++){
+        sum[i] += sum[i-1];
+        val[i] += val[i-1];
+        //cerr << sum[i] << " "
+    }
+    x = 0;
+    int x = n;//表示取x次
+    for(int k = 1; k <= n; k++){//由于答案单调递减，且第一个一定是n
+        //if(k > mxc){ printf("0 "); continue;}
+        while(x > 0 && sum[x] + max(mxc-val[x], 0) * x < (ll)x*k )
+            x--;
+        printf("%d ", x);
     }
     return 0;
 }

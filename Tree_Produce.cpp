@@ -49,11 +49,12 @@ const int maxn = 1e6 + 10;
 int n, a[maxn];
 pii ANS[maxn];
 int main(){
-    freopen("treepro.in", "w", stdout);
+    freopen("data.in", "w", stdout);
+    //cin >> n;
     srand(time(0));
-    puts("100000");
-    n = 10;
-    /*造树
+    puts("100");
+    n = 100;
+    //*造树
     for(int i = 1; i <= n; i++)
         a[i] = i;
     random_shuffle(a+1, a+1+n);
@@ -62,11 +63,13 @@ int main(){
     random_shuffle(ANS+1, ANS+n);
     //*/
 
-    //*造链
+    /*造链
     for(int i = 1; i < n; i++)
         ANS[i].first = i, ANS[i].second = i+1;
     //*/
     for(int i = 1; i < n; i++)
         printf("%d %d\n", ANS[i].first, ANS[i].second);
+    for(int i = 1; i <= n; i++)
+        printf("%d ", rand() % 1000 + 1);
     return 0;
 }
