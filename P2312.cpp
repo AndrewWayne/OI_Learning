@@ -48,7 +48,7 @@ namespace IO{
 using namespace IO;
 const long long llINF = 9223372036854775807;
 const int INF = 2147483647;
-const int maxn = 101;
+const int maxn = 110;
 const int maxm = 1e6 + 10;
 ll n, m, a[maxn];
 int sol[maxm], top;

@@ -46,15 +46,18 @@ namespace IO{
 }
 using namespace IO;
 const int maxn = 1e6 + 10;
-int n, a[maxn];
+int n, m, a[maxn];
 pii ANS[maxn];
 int main(){
     freopen("data.in", "w", stdout);
     //cin >> n;
     srand(time(0));
-    puts("100");
-    n = 100;
-    //*造树
+    srand(rand());
+    srand(rand());
+    //for(int K = 1; K <= 10; K++){
+    puts("10000 3000");
+    n = 5000;
+    /*造树
     for(int i = 1; i <= n; i++)
         a[i] = i;
     random_shuffle(a+1, a+1+n);
@@ -63,13 +66,18 @@ int main(){
     random_shuffle(ANS+1, ANS+n);
     //*/
 
-    /*造链
+    //*造链
     for(int i = 1; i < n; i++)
         ANS[i].first = i, ANS[i].second = i+1;
     //*/
     for(int i = 1; i < n; i++)
-        printf("%d %d\n", ANS[i].first, ANS[i].second);
-    for(int i = 1; i <= n; i++)
-        printf("%d ", rand() % 1000 + 1);
+        printf("%d %d\n", ANS[i].first-1, ANS[i].second-1);
+
+    for(int i = 1; i <= n; i++){
+        printf("%d %d\n", 300, n+i-1);
+    }
+    //, rand() % 10 + 1 ->边权
+    //}
+    puts("0 0");
     return 0;
 }

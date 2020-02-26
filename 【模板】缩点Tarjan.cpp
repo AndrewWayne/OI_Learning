@@ -48,6 +48,9 @@ int main(){
         add(x,y);
     }
     for(int i=1;i<=n;i++) if(!DFN[i]) tarjan(i);
+    for(int i = 1; i <= n; i++)
+        cerr << color[i] << " ";
+    cerr << endl;
     numedge=0;
     for(int i=1;i<=n;i++)
         head[i]=0;

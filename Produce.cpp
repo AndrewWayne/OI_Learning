@@ -59,16 +59,15 @@ ll mul(ll a, ll b, ll p){
 }
 */
 int main(){
+    freopen("data.in", "w", stdout);
     srand(time(0));
     srand(rand());
     srand(rand());
-    int n = 13;
-    cout << 1 << " " << n << endl;
+    int n = 100;
+    cout << n << endl;
     for(int i = 1; i <= n; i++){
-        int x = rand() % 14;
-        int y;
-        if(x == 0) y = rand() % 2 + 1;
-        else y = rand() % 4 + 1;
+        int x = rand() % (1000000) + 1;
+        int y = rand() % (1000000) + 1;
         cout << x << " " << y << endl;
     }
     return 0;
